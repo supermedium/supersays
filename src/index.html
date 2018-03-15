@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+<script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+<script src="ss-controls.js"></script>
+</head>
+<body>
+  <a-scene>
+    <a-assets>
+      <a-mixin id="sector" scale="1 0.36 1" geometry="segmentsHeight:8;segmentsWidth:8;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.3" material="roughness:0.39"></a-mixin>
+    </a-assets>
+    <a-entity environment="preset: poison; skyColor: #852e60; horizonColor: #13304f; fog: 0.62; ground: flat; groundTexture: checkerboard; groundColor: #13304f; groundColor2: #852e60; dressingScale: 1; dressingVariance: 20 20 20; grid: none;"></a-entity>
+
+    <a-entity ss-controls="hand: left">
+      <a-sphere radius="0.06" material="transparent: true; opacity: 0.5; color: #ff7; emissive: #ff7; emissiveIntensity: 0.4"></a-sphere>
+    </a-entity>
+    <a-entity ss-controls="hand: right">
+      <a-sphere radius="0.06" material="transparent: true; opacity: 0.5; color: #ff7; emissive: #ff7; emissiveIntensity: 0.4"></a-sphere>
+    </a-entity>
+
+    <a-entity id="super" position="0 1 -0.7" rotation="0 0 0">
+      <a-entity rotation="0 0 0" mixin="sector">
+        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+      </a-entity>
+      <a-entity rotation="0 90 0" mixin="sector">
+        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+      </a-entity>
+      <a-entity rotation="0 180 0" mixin="sector">
+        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+      </a-entity>
+      <a-entity rotation="0 270 0" mixin="sector">
+        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+      </a-entity>
+    </a-entity>
+  
+    <a-entity position="0 1.3 -1.068" id="debug" text="value: debug; anchor: left" visible="false"></a-entity>
+  </a-scene>
+</body>
+</html>
+
