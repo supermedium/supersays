@@ -4,38 +4,78 @@
 <meta charset="utf-8">
 <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
 <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
-<script src="ss-controls.js"></script>
+<script src="supersays.js"></script>
 </head>
 <body>
   <a-scene>
     <a-assets>
-      <a-mixin id="sector" scale="1 0.36 1" geometry="segmentsHeight:8;segmentsWidth:8;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.3" material="roughness:0.39"></a-mixin>
+      <audio id="note0" src="assets/0.ogg"></audio>
+      <audio id="note1" src="assets/1.ogg"></audio>
+      <audio id="note2" src="assets/3.ogg"></audio>
+      <audio id="note3" src="assets/2.ogg"></audio>
+      <a-mixin id="sector" scale="1 0.2 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
+      <a-mixin id="emissive-anim" attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="300" begin="hit"></a-mixin>
+      <a-mixin id="pos-anim" class="posanim" attribute="position" from="0 -0.02 0" to="0 0 0" dur="200" begin="hitpos"></a-mixin>
+      <a-mixin id="font" text="align: center; width: 3; font: exo2bold; letterSpacing: -1"></a-mixin>
     </a-assets>
     <a-entity environment="preset: poison; skyColor: #852e60; horizonColor: #13304f; fog: 0.62; ground: flat; groundTexture: checkerboard; groundColor: #13304f; groundColor2: #852e60; dressingScale: 1; dressingVariance: 20 20 20; grid: none;"></a-entity>
 
-    <a-entity ss-controls="hand: left">
-      <a-sphere radius="0.06" material="transparent: true; opacity: 0.5; color: #ff7; emissive: #ff7; emissiveIntensity: 0.4"></a-sphere>
+    <a-entity id="lefthand" vive-controls="hand: left; model:false" oculus-touch-controls="hand: left; model:false">
+      <a-sphere radius="0.06" material="transparent: true; opacity: 0.3; color: #ff7; emissive: #ff7; emissiveIntensity: 0.4">
+        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.4" dur="800" begin="hit"></a-animation>
+        <a-animation attribute="material.opacity" from="1.0" to="0.3" dur="800" begin="hit"></a-animation>
+      </a-sphere>
     </a-entity>
-    <a-entity ss-controls="hand: right">
-      <a-sphere radius="0.06" material="transparent: true; opacity: 0.5; color: #ff7; emissive: #ff7; emissiveIntensity: 0.4"></a-sphere>
+    <a-entity id="righthand" vive-controls="hand: right; model:false" oculus-touch-controls="hand: right; model:false">
+      <a-sphere radius="0.06" material="transparent: true; opacity: 0.3; color: #ff7; emissive: #ff7; emissiveIntensity: 0.4">
+        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.4" dur="800" begin="hit"></a-animation>
+        <a-animation attribute="material.opacity" from="1.0" to="0.3" dur="800" begin="hit"></a-animation>
+      </a-sphere>
     </a-entity>
 
-    <a-entity id="super" position="0 1 -0.7" rotation="0 0 0">
-      <a-entity rotation="0 0 0" mixin="sector">
-        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+    <a-entity id="super" supersays position="0 1 -0.7" rotation="0 0 0">
+      <a-entity rotation="0 0 0" mixin="sector" material="color:#800">
+        <a-animation attribute="material.color" from="#F00" to="#800" dur="300" begin="hit"></a-animation>
+        <a-animation mixin="emissive-anim"></a-animation>
+        <a-animation mixin="pos-anim"></a-animation>
+        <a-entity sound="src:#note0; on: hit; poolSize: 20"></a-entity>
       </a-entity>
-      <a-entity rotation="0 90 0" mixin="sector">
-        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+      <a-entity rotation="0 90 0" mixin="sector" material="color:#008">
+        <a-animation attribute="material.color" from="#00F" to="#008" dur="300" begin="hit"></a-animation>
+        <a-animation mixin="emissive-anim"></a-animation>
+        <a-animation mixin="pos-anim"></a-animation>
+        <a-entity sound="src:#note1; on: hit; poolSize: 20"></a-entity>
       </a-entity>
-      <a-entity rotation="0 180 0" mixin="sector">
-        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+      <a-entity rotation="0 180 0" mixin="sector" material="color:#880">
+        <a-animation attribute="material.color" from="#FF0" to="#880" dur="300" begin="hit"></a-animation>
+        <a-animation mixin="emissive-anim"></a-animation>
+        <a-animation mixin="pos-anim"></a-animation>
+        <a-entity sound="src:#note2; on: hit; poolSize: 20"></a-entity>
       </a-entity>
-      <a-entity rotation="0 270 0" mixin="sector">
-        <a-animation attribute="material.emissiveIntensity" from="1.0" to="0.0" dur="200" begin="hit"></a-animation>
+      <a-entity rotation="0 270 0" mixin="sector" material="color:#080">
+        <a-animation attribute="material.color" from="#0F0" to="#080" dur="300" begin="hit"></a-animation>
+        <a-animation mixin="emissive-anim"></a-animation>
+        <a-animation mixin="pos-anim"></a-animation>
+        <a-entity sound="src:#note3; on: hit; poolSize: 20"></a-entity>
+      </a-entity>
+
+      <a-entity position="0 0.14 -0.5" rotation="-30 0 0" geometry="primitive:plane;width:0.8;height:0.05" material="shader:flat;color:#ffffff;transparent:true;opacity:0.16">
+        <a-entity position="0 0 0.01" id="clock" scale="0.4 1 1" geometry="primitive:plane;width:0.8;height:0.05" material="shader:flat;color:#ffffff" visible="false"></a-entity>
       </a-entity>
     </a-entity>
   
-    <a-entity position="0 1.3 -1.068" id="debug" text="value: debug; anchor: left" visible="false"></a-entity>
+    <a-entity id="board" position="0 1.65 -2.2">
+      <a-entity id="level" mixin="font" text="value:Level;width:2.5" position="-0.3 -0.049 0"></a-entity>
+      <a-entity id="levelv" mixin="font" text="value:6.6;width:4" position="-0.3 -0.19 0.04"></a-entity>
+      <a-entity id="points" mixin="font" text="value:Points;width:2.5" position="0.3 -0.054 0"></a-entity>
+      <a-entity id="pointsv" mixin="font" text="value:23434;width:4.07" position="0.3 -0.19 0.04"></a-entity>
+      <a-entity id="messages" mixin="font" text="value:Well done!;width:4.49;opacity:0" position="0 0.254 0.164">
+        <a-animation attribute="text.opacity" from="0" to="1" dur="500" begin="show"></a-animation>
+        <a-animation attribute="position" from="0 0.254 -0.2" to="0 0.254 0.164" dur="1000" easing="ease-out-elastic" begin="show"></a-animation>
+        <a-animation attribute="scale" from="1 1 1" to="1.4 1.4 1.4" dur="1000" easing="ease-out-elastic" begin="show"></a-animation>
+        <a-animation attribute="text.opacity" from="1" to="0" dur="1000" begin="show" delay="4000"></a-animation>
+      </a-entity>
+    </a-entity>
   </a-scene>
 </body>
 </html>
