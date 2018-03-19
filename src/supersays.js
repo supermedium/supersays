@@ -24,7 +24,7 @@ AFRAME.registerComponent('supersays', {
   nextSong: function(){
     this.response = [];
     this.pattern.push(Math.floor(Math.random() * 4));
-    this.levelText.setAttribute('text', {value: ''+this.level});
+    this.levelText.setAttribute('text', {value: '' + this.level});
     this.clock.visible = false;
     window.setTimeout(this.playSong.bind(this), 2000);
   },
@@ -36,10 +36,12 @@ AFRAME.registerComponent('supersays', {
     this.note = 0;
     this.time = 0;
     this.maxTime = 10000;
+    this.points = 0;
+    this.pointsAnim = 0;
     this.nextSong();
   },
   play: function(){
-    window.setTimeout(this.newGame.bind(this), 2000);
+    this.el.addEventListener('startgame', this.newGame.bind(this));
   },
   playSong: function(){
     this.note = 0;
@@ -61,8 +63,10 @@ AFRAME.registerComponent('supersays', {
   },
   playerPlays: function(note){
     this.response.push(note);
+    //console.log(this.response, this.pattern);
     if (this.response.join('') === this.pattern.join('').substr(0, this.response.length)){
       if (this.response.length === this.pattern.length){
+        this.points += Math.floor(this.level * 100 + (1.0 - this.time / this.maxTime) * 50);
         this.level++;
         this.nextSong();
       }
@@ -71,7 +75,9 @@ AFRAME.registerComponent('supersays', {
   },
   gameOver: function(){
     this.state = 0;
-    this.say("GAME OVER");   
+    this.say("GAME OVER");
+    document.getElementById('loopsound').components.sound.stopSound();
+    this.el.emit("gameover");
   },
   locateHit: function(v){
     if (v.x > 0 && v.z > 0) return 1;
@@ -130,9 +136,16 @@ AFRAME.registerComponent('supersays', {
       else{ this.rightOn = -1; }
     }
 
+    if (this.points > this.pointsAnim){
+      this.pointsAnim += 5;
+      if (this.pointsAnim > this.points) this.pointsAnim = this.points;
+      this.pointsText.setAttribute('text', {value: this.pointsAnim});
+    }
+
+
     this.time += delta;
-    this.clock.scale.x = this.time / this.maxTime;
-    this.clock.position.x = -0.4 * (1.0 - this.time / this.maxTime);
+    this.clock.scale.x = 1.0 - this.time / this.maxTime;
+    this.clock.position.x = -0.4 * this.time / this.maxTime;
     if (this.time > this.maxTime){ this.gameOver(); }
 
   }
