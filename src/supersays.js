@@ -14,6 +14,12 @@ AFRAME.registerComponent('supersays', {
     this.levelText = document.getElementById('levelv');
     this.pointsText = document.getElementById('pointsv');
     this.messages = document.getElementById('messages');
+    this.noteEls = [
+      document.getElementById('note0'),
+      document.getElementById('note1'),
+      document.getElementById('note2'),
+      document.getElementById('note3')
+    ];
     this.leftHand = this.leftHandEl.object3D;
     this.rightHand = this.rightHandEl.object3D;
     this.leftPrevY = this.leftHand.position.y;
@@ -22,20 +28,20 @@ AFRAME.registerComponent('supersays', {
     this.b = new THREE.Vector3();
   },
   nextSong: function(){
+    this.state = 1; // 0 paused, 1 supersays, 2 playersays
+    this.time = 0;
+    this.maxTime = 10000 - this.level * 200;
     this.response = [];
     this.pattern.push(Math.floor(Math.random() * 4));
     this.levelText.setAttribute('text', {value: '' + this.level});
-    this.clock.visible = false;
+    this.clock.scale.x = 1;
+    this.clock.position.x = 0;
     window.setTimeout(this.playSong.bind(this), 2000);
   },
   newGame: function(){
-    this.state = 1; // 0 paused, 1 supersays, 2 playersays
+    this.messages.setAttribute('text', {value: ''});
     this.level = 1;
     this.pattern = [];
-    this.response = [];
-    this.note = 0;
-    this.time = 0;
-    this.maxTime = 10000;
     this.points = 0;
     this.pointsAnim = 0;
     this.nextSong();
@@ -51,19 +57,17 @@ AFRAME.registerComponent('supersays', {
     if (this.note == this.pattern.length){
       this.time = 0;
       this.state = 2;
-      this.clock.position.x = -0.4;
-      this.clock.scale.x = 0;
-      this.clock.visible = true;
+      this.clock.position.x = 0;
+      this.clock.scale.x = 1;
     }
     else{
       this.playNote(this.pattern[this.note], true);
       this.note++;
-      window.setTimeout(this.playSongNote.bind(this), 700);
+      window.setTimeout(this.playSongNote.bind(this), Math.floor(700 - this.level * 20));
     }
   },
   playerPlays: function(note){
     this.response.push(note);
-    //console.log(this.response, this.pattern);
     if (this.response.join('') === this.pattern.join('').substr(0, this.response.length)){
       if (this.response.length === this.pattern.length){
         this.points += Math.floor(this.level * 100 + (1.0 - this.time / this.maxTime) * 50);
@@ -71,7 +75,9 @@ AFRAME.registerComponent('supersays', {
         this.nextSong();
       }
     }
-    else { this.gameOver(); }
+    else { 
+      this.gameOver(); 
+    }
   },
   gameOver: function(){
     this.state = 0;
@@ -86,18 +92,23 @@ AFRAME.registerComponent('supersays', {
     else return 0;
   },
   playNote: function(note, supersays){
-    for (i = 0; i < this.el.children[note].children.length; i++) {
-      if (!supersays && this.el.children[note].children[i].className == 'posanim') {
-        this.el.children[note].children[i].emit('hitpos');
-      }
-      else { this.el.children[note].children[i].emit('hit'); }
+    if (!supersays) {
+      this.noteEls[note].emit('hitpos');
     }
+    this.noteEls[note].emit('hit');
+    this.noteEls[note].children[0].emit('hit');
   },
   say: function(msg){
     this.messages.setAttribute('text', {value: msg});
     this.messages.emit('show');
   },
   tick: function(time, delta){
+    if (this.points > this.pointsAnim){
+      this.pointsAnim += 5;
+      if (this.pointsAnim > this.points) this.pointsAnim = this.points;
+      this.pointsText.setAttribute('text', {value: this.pointsAnim});
+    }
+
     if (this.state != 2) return;
     var i;
     var left = this.leftHand.position;
@@ -126,7 +137,7 @@ AFRAME.registerComponent('supersays', {
     if (rightv < 0) {
       if (right.distanceTo(this.tablePos) < this.handRadius + this.tableRadius.x && this.b.y < this.tableRadius.y && this.b.y > 0){
         hit = this.locateHit(this.b);
-        if (hit != this.leftOn){
+        if (hit != this.rightOn){
           this.rightHandEl.children[0].emit('hit');
           this.playerPlays(hit);
           this.playNote(hit, false);
@@ -136,17 +147,12 @@ AFRAME.registerComponent('supersays', {
       else{ this.rightOn = -1; }
     }
 
-    if (this.points > this.pointsAnim){
-      this.pointsAnim += 5;
-      if (this.pointsAnim > this.points) this.pointsAnim = this.points;
-      this.pointsText.setAttribute('text', {value: this.pointsAnim});
-    }
-
-
-    this.time += delta;
+    this.time += Math.min(20, delta);
     this.clock.scale.x = 1.0 - this.time / this.maxTime;
     this.clock.position.x = -0.4 * this.time / this.maxTime;
-    if (this.time > this.maxTime){ this.gameOver(); }
+    if (this.time > this.maxTime){ 
+      this.gameOver(); 
+    }
 
   }
 
