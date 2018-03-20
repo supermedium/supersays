@@ -20,6 +20,7 @@
       <audio id="sound-note3" src="assets/2.ogg"></audio>
       <audio id="gong" src="assets/gong.ogg"></audio>
       <audio id="loop" src="assets/loop.ogg"></audio>
+      <audio id="fail" src="assets/fail.ogg"></audio>
       <a-mixin id="sector" scale="1 0.2 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
       <a-mixin id="emissive-anim" animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.0; dur: 300; easing: easeInCubic; startEvents: hit"></a-mixin>
       <a-mixin id="pos-anim" animation__pos="property: position; from: 0 -0.015 0; to: 0 0 0; dur: 70; easing: easeInCubic; startEvents: hitpos"></a-mixin>
@@ -43,7 +44,7 @@
 
     <a-entity id="super"  position="0 1 -0.7" rotation="0 0 0"
       supersays
-      proxy-event="event: gameover; to: #startbutton, #messages, #board, #clockbg; as: gameover"
+      proxy-event="event: gameover; to: #startbutton, #messages, #board, #clockbg, #soundfail; as: gameover"
     >
       <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim" material="color:#800"
         animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit">
@@ -104,6 +105,9 @@
         animation__scale="property: scale; from: 1 1 1; to: 1.4 1.4 1.4; dur: 1000; easing: easeOutElastic; startEvents: show"
         animation__opacity2="property: text.opacity; from: 1; to: 0; dur: 1000; startEvents: show; delay: 4000">
       </a-entity>
+      
+      <a-entity id="soundfail" sound="src:#fail; on: gameover"></a-entity>
+
     </a-entity>
 
     <a-entity id="highscores" position="-3 3 -1.6" rotation="0 66 0" visible="false">
