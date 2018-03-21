@@ -3,8 +3,8 @@ AFRAME.registerComponent('supersays', {
   },
   init: function(){
     this.tablePos = this.el.object3D.position;
-    this.tableRadius = new THREE.Vector3(0.4, 0.4 * 0.2, 0.4);
-    this.handRadius = 0.06;
+    this.tableRadius = new THREE.Vector3(0.4, 0.4 * 0.05, 0.4);
+    this.handRadius = 0.04;
     this.debug = document.getElementById('debug');
     this.leftOn = -1;
     this.rightOn = -1;
@@ -34,8 +34,7 @@ AFRAME.registerComponent('supersays', {
     this.response = [];
     this.pattern.push(Math.floor(Math.random() * 4));
     this.levelText.setAttribute('text', {value: '' + this.level});
-    this.clock.scale.x = 1;
-    this.clock.position.x = 0;
+    this.clock.visible = false;
     window.setTimeout(this.playSong.bind(this), 2000);
   },
   newGame: function(){
@@ -59,6 +58,7 @@ AFRAME.registerComponent('supersays', {
       this.state = 2;
       this.clock.position.x = 0;
       this.clock.scale.x = 1;
+      this.clock.visible = true;
     }
     else{
       this.playNote(this.pattern[this.note], true);
@@ -97,6 +97,7 @@ AFRAME.registerComponent('supersays', {
     }
     this.noteEls[note].emit('hit');
     this.noteEls[note].children[0].emit('hit');
+    this.noteEls[note].children[1].emit('hit');
   },
   say: function(msg){
     this.messages.setAttribute('text', {value: msg});
@@ -119,10 +120,8 @@ AFRAME.registerComponent('supersays', {
     this.rightPrevY = right.y;
 
     if (leftv < 0) {
-      this.a.set(left.x - this.tablePos.x, left.y - this.tablePos.y, left.z - this.tablePos.z);
-      this.b.set(right.x - this.tablePos.x, right.y - this.tablePos.y, right.z - this.tablePos.z);
-
-      if (left.distanceTo(this.tablePos) < this.handRadius + this.tableRadius.x && this.a.y < this.tableRadius.y && this.a.y > 0){
+      if (left.distanceTo(this.tablePos) < this.handRadius + this.tableRadius.x && left.y < this.tablePos.y + this.handRadius && left.y > this.tablePos.y - 0.3){
+        this.a.set(left.x - this.tablePos.x, left.y - this.tablePos.y, left.z - this.tablePos.z);
         hit = this.locateHit(this.a);
         if (hit != this.leftOn){
           this.leftHandEl.children[0].emit('hit');
@@ -133,9 +132,10 @@ AFRAME.registerComponent('supersays', {
       }
       else{ this.leftOn = -1; }
     }
-
+  
     if (rightv < 0) {
-      if (right.distanceTo(this.tablePos) < this.handRadius + this.tableRadius.x && this.b.y < this.tableRadius.y && this.b.y > 0){
+      if (right.distanceTo(this.tablePos) < this.handRadius + this.tableRadius.x && right.y < this.tablePos.y + this.handRadius && right.y > this.tablePos.y - 0.3){
+        this.b.set(right.x - this.tablePos.x, right.y - this.tablePos.y, right.z - this.tablePos.z);
         hit = this.locateHit(this.b);
         if (hit != this.rightOn){
           this.rightHandEl.children[0].emit('hit');

@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!--<script src="https://aframe.io/releases/0.8.1/aframe.min.js"></script>-->
-<script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script>
-<script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
-<script src="https://rawgit.com/ngokevin/kframe/master/components/animation/dist/aframe-animation-component.min.js"></script>
-<script src="https://rawgit.com/ngokevin/kframe/master/components/proxy-event/dist/aframe-proxy-event-component.min.js"></script>
+<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+<script src="https://unpkg.com/aframe-environment-component@1.0.0/index.js"></script>
+<script src="https://unpkg.com/aframe-animation-component@4.1.1/dist/aframe-animation-component.min.js"></script>
+<script src="https://unpkg.com/aframe-proxy-event-component@1.1.1/dist/aframe-proxy-event-component.min.js"></script>
 <script src="supersays.js"></script>
 <script src="highscores.js"></script>
 <script src="button.js"></script>
@@ -21,7 +20,9 @@
       <audio id="gong" src="assets/gong.ogg"></audio>
       <audio id="loop" src="assets/loop.ogg"></audio>
       <audio id="fail" src="assets/fail.ogg"></audio>
-      <a-mixin id="sector" scale="1 0.2 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
+      <a-mixin id="sector" scale="1 0.05 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
+      <a-mixin id="sectorbase" position="0 -10 0" geometry="openEnded:true; height:20; radius:0.37; segmentsHeight:8; segmentsRadial:16; primitive:cylinder; thetaLength:90; thetaStart:-90" material="roughness:0.39"></a-mixin>
+
       <a-mixin id="emissive-anim" animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.0; dur: 300; easing: easeInCubic; startEvents: hit"></a-mixin>
       <a-mixin id="pos-anim" animation__pos="property: position; from: 0 -0.015 0; to: 0 0 0; dur: 70; easing: easeInCubic; startEvents: hitpos"></a-mixin>
       <a-mixin id="font" text="align: center; width: 3; font: exo2bold; letterSpacing: -1"></a-mixin>
@@ -30,13 +31,13 @@
     <a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>
 
     <a-entity id="lefthand" vive-controls="hand: left; model:false" oculus-touch-controls="hand: left; model:false">
-      <a-sphere radius="0.06" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
+      <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
         animation__opacity ="property: material.opacity; from: 1.0; to: 0.3; dur: 800; startEvents: hit"
       ></a-sphere>
     </a-entity>
     <a-entity id="righthand" vive-controls="hand: right; model:false" oculus-touch-controls="hand: right; model:false">
-      <a-sphere radius="0.06" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
+      <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
         animation__opacity ="property: material.opacity; from: 1.0; to: 0.3; dur: 800; startEvents: hit"
       ></a-sphere>
@@ -48,18 +49,26 @@
     >
       <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim" material="color:#800"
         animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit">
+        <a-entity mixin="sectorbase" material="color:#800"
+          animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit"></a-entity>
         <a-entity sound="src:#sound-note0; on: hit; poolSize: 20"></a-entity>
       </a-entity>
       <a-entity id="note1" rotation="0 90 0" mixin="sector emissive-anim pos-anim" material="color:#008"
         animation__color ="property: material.color; from: #00F; to: #008; dur: 300; startEvents: hit">
+        <a-entity mixin="sectorbase" material="color:#008"
+          animation__color ="property: material.color; from: #00F; to: #008; dur: 300; startEvents: hit"></a-entity>
         <a-entity sound="src:#sound-note1; on: hit; poolSize: 20"></a-entity>
       </a-entity>
       <a-entity id="note2" rotation="0 180 0" mixin="sector emissive-anim pos-anim" material="color:#880"
         animation__color ="property: material.color; from: #FF0; to: #880; dur: 300; startEvents: hit">
+        <a-entity mixin="sectorbase" material="color:#880"
+          animation__color ="property: material.color; from: #FF0; to: #880; dur: 300; startEvents: hit"></a-entity>
         <a-entity sound="src:#sound-note2; on: hit; poolSize: 20"></a-entity>
       </a-entity>
       <a-entity id="note3" rotation="0 270 0" mixin="sector emissive-anim pos-anim" material="color:#080"
         animation__color ="property: material.color; from: #0F0; to: #080; dur: 300; startEvents: hit">
+        <a-entity mixin="sectorbase" material="color:#080"
+          animation__color ="property: material.color; from: #0F0; to: #080; dur: 300; startEvents: hit"></a-entity>
         <a-entity sound="src:#sound-note3; on: hit; poolSize: 20"></a-entity>
       </a-entity>
 
