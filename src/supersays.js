@@ -124,6 +124,7 @@ AFRAME.registerComponent('supersays', {
         this.a.set(left.x - this.tablePos.x, left.y - this.tablePos.y, left.z - this.tablePos.z);
         hit = this.locateHit(this.a);
         if (hit != this.leftOn){
+          this.leftHandEl.components.haptics.pulse();
           this.leftHandEl.children[0].emit('hit');
           this.playerPlays(hit);
           this.playNote(hit, false);
@@ -138,6 +139,7 @@ AFRAME.registerComponent('supersays', {
         this.b.set(right.x - this.tablePos.x, right.y - this.tablePos.y, right.z - this.tablePos.z);
         hit = this.locateHit(this.b);
         if (hit != this.rightOn){
+          this.rightHandEl.components.haptics.pulse();
           this.rightHandEl.children[0].emit('hit');
           this.playerPlays(hit);
           this.playNote(hit, false);

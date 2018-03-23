@@ -6,6 +6,7 @@
 <script src="https://unpkg.com/aframe-environment-component@1.0.0/index.js"></script>
 <script src="https://unpkg.com/aframe-animation-component@4.1.1/dist/aframe-animation-component.min.js"></script>
 <script src="https://unpkg.com/aframe-proxy-event-component@1.1.1/dist/aframe-proxy-event-component.min.js"></script>
+<script src="https://unpkg.com/aframe-haptics-component@1.4.1/dist/aframe-haptics-component.min.js"></script>
 <script src="supersays.js"></script>
 <script src="highscores.js"></script>
 <script src="button.js"></script>
@@ -30,13 +31,21 @@
     </a-assets>
     <a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>
 
-    <a-entity id="lefthand" vive-controls="hand: left; model:false" oculus-touch-controls="hand: left; model:false">
+    <a-entity id="lefthand" 
+      vive-controls="hand: left; model:false" 
+      oculus-touch-controls="hand: left; model:false" 
+      haptics="dur: 40"
+      >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
         animation__opacity ="property: material.opacity; from: 1.0; to: 0.3; dur: 800; startEvents: hit"
       ></a-sphere>
     </a-entity>
-    <a-entity id="righthand" vive-controls="hand: right; model:false" oculus-touch-controls="hand: right; model:false">
+    <a-entity id="righthand" 
+      vive-controls="hand: right; model:false" 
+      oculus-touch-controls="hand: right; model:false"
+      haptics="dur: 40"
+      >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
         animation__opacity ="property: material.opacity; from: 1.0; to: 0.3; dur: 800; startEvents: hit"

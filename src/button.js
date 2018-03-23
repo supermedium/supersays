@@ -5,7 +5,7 @@ AFRAME.registerComponent('button', {
     enabled: {default: true}
   },
   init: function () {
-    this.hands = [document.getElementById('righthand').object3D, document.getElementById('lefthand').object3D];
+    this.hands = [document.getElementById('righthand'), document.getElementById('lefthand')];
     var target = this.data.hitTarget == null ? this.el: this.data.hitTarget;
     this.bb = new THREE.Box3().setFromObject(target.object3D);
     var coords = 'xyz'.split('');
@@ -25,13 +25,17 @@ AFRAME.registerComponent('button', {
   },
   tick: function(time, delta){
     if (!this.data.enabled) return;
-    var hit = 0;
+    var hit = 0, hand;
     for (var i = 0; i < this.hands.length; i++) {
-      if (this.bb.containsPoint(this.hands[i].position)){ hit++; }
+      if (this.bb.containsPoint(this.hands[i].object3D.position)){
+        hit++;
+        hand = this.hands[i];
+      }
     }
     if (hit > 0){
       if (!this.hitting){
         this.emitEvent('focus');
+        hand.components.haptics.pulse();
         this.hitting = true;
       }
     }
