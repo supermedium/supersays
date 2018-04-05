@@ -2,6 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+<script type="text/javascript">
+  var config = {
+  apiKey: "AIzaSyBr7xarwCbbm2NXpp6yt1RiieXmahzstc0",
+  authDomain: "super-says.firebaseapp.com",
+  databaseURL: "https://super-says.firebaseio.com",
+  projectId: "super-says",
+  storageBucket: "super-says.appspot.com",
+  messagingSenderId: "942871960205"
+};
+firebase.initializeApp(config);
+</script>
 <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
 <script src="https://unpkg.com/aframe-environment-component@1.0.0/index.js"></script>
 <script src="https://unpkg.com/aframe-animation-component@4.1.1/dist/aframe-animation-component.min.js"></script>
@@ -128,7 +140,7 @@
 
     </a-entity>
 
-    <a-entity id="highscores" position="-3 3 -1.6" rotation="0 66 0" visible="false">
+    <a-entity id="highscores" position="-3 3 -1.6" rotation="0 66 0">
       <a-entity mixin="font" text="value:High Scores; width:5" position="0 0 0.1"></a-entity>
       <a-entity highscores="spacing: 0.25" position="0 -0.4 0">
         <a-entity>
