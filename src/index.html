@@ -21,6 +21,7 @@ firebase.initializeApp(config);
 <script src="https://unpkg.com/aframe-haptics-component@1.4.1/dist/aframe-haptics-component.min.js"></script>
 <script src="supersays.js"></script>
 <script src="highscores.js"></script>
+<script src="simple-keyboard.js"></script>
 <script src="button.js"></script>
 </head>
 <body>
@@ -42,6 +43,8 @@ firebase.initializeApp(config);
       <a-mixin id="highscorefont" mixin="font" text="width: 1.5; wrapCount: 15"></a-mixin>
     </a-assets>
     <a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>
+
+    <a-entity simple-keyboard position="0 1.4 -1"></a-entity>
 
     <a-entity id="lefthand" 
       vive-controls="hand: left; model:false" 
