@@ -14,8 +14,28 @@ AFRAME.registerComponent('simple-keyboard', {
     };
     this.kbImg = document.createElement('a-entity');
     this.el.appendChild(this.kbImg);
+    this.el.className = 'keyboard-raycastable';
     this.keys = null;
+    this.hovered = null;
     document.addEventListener('keydown', this.keydown.bind(this));
+    document.addEventListener('raycaster-intersected', this.hover.bind(this));
+  },
+
+  hover: function(ev){
+    var uv = ev.detail.intersection.uv;
+    console.log(ev.detail.intersection);
+    uv.y = 1.0 - uv.y;
+    var keys = this.KEYBOARDS[this.data.model].layout;
+    //console.log(ev.detail.intersection.faceIndex, uv.x, uv.y);
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      if (uv.x > k.x && uv.x < k.x + k.w && uv.y > k.y && uv.y < k.y + k.h) {
+        if (this.hovered) this.hovered.setAttribute('material', {color: this.data.bgColor});
+        k.el.setAttribute('material', {color: this.data.hoverColor});
+        this.hovered = k.el;
+        break;
+      }
+    }
   },
   keydown: function(ev){
     var keys = this.KEYBOARDS[this.data.model].layout;
@@ -35,7 +55,7 @@ AFRAME.registerComponent('simple-keyboard', {
     var h2 = h / 2;
     
     this.kbImg.setAttribute('geometry', {primitive: 'plane', width: w, height: h});
-    this.kbImg.setAttribute('material', {shader: 'flat', src: kbdata.img, transparent: true, color: this.data.fontColor, depthWrite: false});
+    this.kbImg.setAttribute('material', {shader: 'flat', src: kbdata.img, wireframe:true, transparent: false, color: this.data.fontColor, depthWrite: true});
 
     if (this.keys) {
       this.keys.parentNode.removeChild(this.keys);

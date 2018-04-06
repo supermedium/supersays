@@ -12,11 +12,10 @@ AFRAME.registerComponent('highscores', {
     var data = data.val()
     this.scores = Object.values(data);
     this.scores.sort(function(a,b){ return a['score'] < b['score'] ? 1 : a['score'] > b['score'] ? -1 : 0})
-    console.log(this.scores)
     this.update();
   }, 
   updateError: function(err){
-    console.log(err);
+    console.error(err);
   },
   saveScore: function(name, score){
     this.db.push( {name: name.substr(0, 3).toUpperCase(), score: parseInt(score) });

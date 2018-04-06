@@ -60,6 +60,7 @@ firebase.initializeApp(config);
       vive-controls="hand: right; model:false" 
       oculus-touch-controls="hand: right; model:false"
       haptics="dur: 40"
+      raycaster="objects: .keyboard-raycastable; showLine: true; far: 3; interval: 100;"
       >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
