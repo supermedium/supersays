@@ -23,6 +23,7 @@ firebase.initializeApp(config);
 <script src="highscores.js"></script>
 <script src="simple-keyboard.js"></script>
 <script src="button.js"></script>
+
 </head>
 <body>
   <a-scene>
@@ -44,8 +45,8 @@ firebase.initializeApp(config);
     </a-assets>
     <a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>
 
-    <a-entity simple-keyboard position="0 1.4 -1"></a-entity>
-
+    <a-entity simple-keyboard position="0 1.4 -.5"></a-entity>
+        
     <a-entity id="lefthand" 
       vive-controls="hand: left; model:false" 
       oculus-touch-controls="hand: left; model:false" 
@@ -60,7 +61,7 @@ firebase.initializeApp(config);
       vive-controls="hand: right; model:false" 
       oculus-touch-controls="hand: right; model:false"
       haptics="dur: 40"
-      raycaster="objects: .keyboard-raycastable; showLine: true; far: 3; interval: 100;"
+      raycaster="objects: .keyboard-raycastable; showLine: true; far: 3;"
       >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
