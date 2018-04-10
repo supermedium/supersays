@@ -7,42 +7,49 @@ AFRAME.registerComponent('simple-keyboard', {
     maxlength: {type: 'int', default: 0},
     model: {default: 'basic'},
     width: {default: 0.5},
-    value: {type: 'string', default: ''}
+    value: {type: 'string', default: ''},
+    interval: {type: 'int', default: 50}
   },
 
   init: function(){
     this.KEYBOARDS = {
-      'basic': {img: "./sk-basic.png", layout: [{"key":"2", "x":0.159, "y":0.041, "w":0.085, "h":0.21}, {"key":"3", "x":0.247, "y":0.041, "w":0.079, "h":0.21}, {"key":"4", "x":0.328, "y":0.041, "w":0.078, "h":0.21}, {"key":"5", "x":0.408, "y":0.041, "w":0.081, "h":0.21}, {"key":"6", "x":0.492, "y":0.041, "w":0.08, "h":0.21}, {"key":"7", "x":0.575, "y":0.041, "w":0.081, "h":0.21}, {"key":"8", "x":0.658, "y":0.041, "w":0.083, "h":0.21}, {"key":"9", "x":0.745, "y":0.041, "w":0.079, "h":0.21}, {"key":"0", "x":0.826, "y":0.041, "w":0.094, "h":0.21}, {"key":"1", "x":0.067, "y":0.041, "w":0.088, "h":0.21}, {"key":"q", "x":0.001, "y":0.253, "w":0.093, "h":0.238}, {"key":"w", "x":0.096, "y":0.253, "w":0.119, "h":0.238}, {"key":"e", "x":0.216, "y":0.253, "w":0.09, "h":0.238}, {"key":"r", "x":0.309, "y":0.253, "w":0.096, "h":0.238}, {"key":"t", "x":0.407, "y":0.253, "w":0.092, "h":0.238}, {"key":"y", "x":0.501, "y":0.253, "w":0.091, "h":0.238}, {"key":"u", "x":0.595, "y":0.253, "w":0.108, "h":0.238}, {"key":"i", "x":0.705, "y":0.253, "w":0.087, "h":0.238}, {"key":"o", "x":0.794, "y":0.253, "w":0.101, "h":0.238}, {"key":"p", "x":0.897, "y":0.253, "w":0.095, "h":0.238}, {"key":"a", "x":0.054, "y":0.494, "w":0.099, "h":0.218}, {"key":" ", "x":0.156, "y":0.494, "w":0.089, "h":0.218}, {"key":"d", "x":0.247, "y":0.494, "w":0.1, "h":0.218}, {"key":"f", "x":0.349, "y":0.494, "w":0.09, "h":0.218}, {"key":"g", "x":0.442, "y":0.494, "w":0.102, "h":0.218}, {"key":"h", "x":0.546, "y":0.494, "w":0.104, "h":0.218}, {"key":"j", "x":0.653, "y":0.494, "w":0.091, "h":0.218}, {"key":"k", "x":0.747, "y":0.494, "w":0.098, "h":0.218}, {"key":"l", "x":0.847, "y":0.494, "w":0.092, "h":0.218}, {"key":"z", "x":0.121, "y":0.714, "w":0.112, "h":0.24}, {"key":"x", "x":0.235, "y":0.714, "w":0.098, "h":0.24}, {"key":"c", "x":0.334, "y":0.714, "w":0.099, "h":0.238}, {"key":"v", "x":0.435, "y":0.716, "w":0.099, "h":0.23}, {"key":"b", "x":0.537, "y":0.716, "w":0.095, "h":0.236}, {"key":"n", "x":0.634, "y":0.716, "w":0.097, "h":0.236}, {"key":"m", "x":0.735, "y":0.716, "w":0.112, "h":0.236}] }
+      'basic': {img: "./sk-basic.png", layout: [{"key":"1", "x":0.053, "y":0.089, "w":0.065, "h":0.167}, {"key":"2", "x":0.124, "y":0.089, "w":0.065, "h":0.167}, {"key":"3", "x":0.194, "y":0.089, "w":0.066, "h":0.167}, {"key":"4", "x":0.265, "y":0.089, "w":0.065, "h":0.167}, {"key":"5", "x":0.334, "y":0.089, "w":0.066, "h":0.167}, {"key":"6", "x":0.406, "y":0.089, "w":0.065, "h":0.167}, {"key":"7", "x":0.476, "y":0.089, "w":0.065, "h":0.167}, {"key":"8", "x":0.545, "y":0.089, "w":0.066, "h":0.167}, {"key":"9", "x":0.617, "y":0.089, "w":0.065, "h":0.167}, {"key":"0", "x":0.687, "y":0.089, "w":0.065, "h":0.167}, {"key":"Escape", "x":0.836, "y":0.101, "w":0.079, "h":0.158}, {"key":"Delete", "x":0.82, "y":0.507, "w":0.116, "h":0.132}, {"key":"Enter", "x":0.82, "y":0.726, "w":0.116, "h":0.164}, {"key":"q", "x":0.054, "y":0.308, "w":0.065, "h":0.167}, {"key":"w", "x":0.124, "y":0.308, "w":0.065, "h":0.167}, {"key":"e", "x":0.194, "y":0.308, "w":0.066, "h":0.167}, {"key":"r", "x":0.265, "y":0.308, "w":0.065, "h":0.167}, {"key":"t", "x":0.334, "y":0.308, "w":0.066, "h":0.167}, {"key":"y", "x":0.406, "y":0.308, "w":0.065, "h":0.167}, {"key":"u", "x":0.476, "y":0.308, "w":0.065, "h":0.167}, {"key":"i", "x":0.545, "y":0.308, "w":0.066, "h":0.167}, {"key":"o", "x":0.617, "y":0.308, "w":0.065, "h":0.167}, {"key":"p", "x":0.687, "y":0.308, "w":0.065, "h":0.167}, {"key":"a", "x":0.081, "y":0.519, "w":0.065, "h":0.167}, {"key":"s", "x":0.151, "y":0.519, "w":0.066, "h":0.167}, {"key":"d", "x":0.222, "y":0.519, "w":0.065, "h":0.167}, {"key":"f", "x":0.291, "y":0.519, "w":0.066, "h":0.167}, {"key":"g", "x":0.363, "y":0.519, "w":0.065, "h":0.167}, {"key":"h", "x":0.433, "y":0.519, "w":0.065, "h":0.167}, {"key":"j", "x":0.502, "y":0.519, "w":0.066, "h":0.167}, {"key":"k", "x":0.574, "y":0.519, "w":0.065, "h":0.167}, {"key":"l", "x":0.644, "y":0.519, "w":0.065, "h":0.167}, {"key":"z", "x":0.152, "y":0.728, "w":0.065, "h":0.167}, {"key":"x", "x":0.221, "y":0.728, "w":0.066, "h":0.167}, {"key":"c", "x":0.292, "y":0.728, "w":0.065, "h":0.167}, {"key":"v", "x":0.363, "y":0.728, "w":0.065, "h":0.167}, {"key":"b", "x":0.432, "y":0.728, "w":0.066, "h":0.167}, {"key":"n", "x":0.503, "y":0.728, "w":0.065, "h":0.167}, {"key":"m", "x":0.574, "y":0.728, "w":0.065, "h":0.167}] }
     };
+
+    this.keys = null;
+    this.focused = false;
+    this.keyHover = null;
+    this.prevCheckTime = null;
+
     this.kbImg = document.createElement('a-entity');
     this.el.appendChild(this.kbImg);
-    this.keys = null;
-    this.hovered = null;
+    this.kbImg.classList.add('keyboard-raycastable');
+    this.kbImg.addEventListener('raycaster-intersected', this.hover.bind(this));
+    this.kbImg.addEventListener('raycaster-intersected-cleared', this.blur.bind(this));
 
-    this.textBox = document.createElement('a-entity');
-    this.textBox.setAttribute('text', {align: 'center', value: this.data.value, color: this.data.fontColor, width: this.data.width, wrapCount:20});
-    this.textBox.setAttribute('position', {x: 0, y: 0.176, z: -0.04});
-    this.el.appendChild(this.textBox);
+    this.textInput = document.createElement('a-entity');
+    this.textInput.setAttribute('text', {align: 'center', value: this.data.value, color: this.data.fontColor, width: this.data.width, wrapCount:20});
+    this.textInput.setAttribute('position', {x: 0, y: 0.176, z: -0.04});
+    this.el.appendChild(this.textInput);
 
     document.addEventListener('keydown', this.keydown.bind(this));
     document.querySelector('[raycaster]').addEventListener('triggerdown', this.click.bind(this));
   },
 
   click: function(ev){
-    if (!this.hovered){ return; }
-    this.data.value += this.hovered.key;
-    this.textBox.setAttribute('text', {value: this.data.value});
+    if (!this.keyHover){ return; }
+    this.data.value += this.keyHover.key;
+    this.textInput.setAttribute('text', {value: this.data.value});
   },
 
   blur: function(ev){
-    if (this.hovered) this.hovered.el.setAttribute('material', {color: this.data.bgColor});
-    this.hovered = null;
+    this.focused = false;
+    if (this.keyHover) this.keyHover.el.setAttribute('material', {color: this.data.bgColor});
+    this.keyHover = null;
   },
 
   hover: function(ev){
-    if (this.hovered) this.hovered.el.setAttribute('material', {color: this.data.bgColor});
-    ev.detail.intersection.object.el.setAttribute('material', {color: this.data.hoverColor});
-    this.hovered = ev.detail.intersection.object.el.data;
+    this.focused = true;
   },
 
   keydown: function(ev){
@@ -71,7 +78,7 @@ AFRAME.registerComponent('simple-keyboard', {
 
     this.keys = document.createElement('a-entity');
     this.el.appendChild(this.keys);
-    this.keys.setAttribute('position', {x: 0, y: 0, z: -0.009});
+    this.keys.setAttribute('position', {x: 0, y: 0, z: 0.009});
 
     for (var i = 0; i < kbdata.layout.length; i++) {
       var kdata = kbdata.layout[i];
@@ -82,13 +89,27 @@ AFRAME.registerComponent('simple-keyboard', {
       key.setAttribute('position', {x: kdata.x * w - w2 + keyw / 2, y: (1 - kdata.y) * h - h2 - keyh / 2, z: 0})
       key.setAttribute('geometry', {primitive: 'plane', width: keyw, height: keyh});
       key.setAttribute('material', {shader: 'flat', color: this.data.bgColor});
-      key.classList.add('keyboard-raycastable');
-      key.addEventListener('raycaster-intersected', this.hover.bind(this));
-      key.addEventListener('raycaster-intersected-cleared', this.blur.bind(this));
-      this.keys.appendChild(key);
       kdata.el = key;
-      key.data = kdata;
+      key.object3D.children[0].material.blending = THREE.AdditiveBlending;
+      this.keys.appendChild(key);
     }
+  },
 
+  tick: function (time) {
+    if (this.prevCheckTime && (time - this.prevCheckTime < this.data.interval)) { return; }
+    this.prevCheckTime = time;
+    if (this.focused){
+      var uv = document.querySelector('[raycaster]').components.raycaster.getIntersection(this.kbImg).uv;
+      var keys = this.KEYBOARDS[this.data.model].layout;
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (uv.x > k.x && uv.x < k.x + k.w && (1.0 - uv.y) > k.y && (1.0 - uv.y) < k.y + k.h) {
+          if (this.keyHover) this.keyHover.el.setAttribute('material', {color: this.data.bgColor});
+          k.el.setAttribute('material', {color: this.data.hoverColor});
+          this.keyHover = k;
+          break;
+        }
+      }
+    }
   }
 });

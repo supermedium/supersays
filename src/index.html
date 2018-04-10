@@ -14,7 +14,7 @@
 };
 firebase.initializeApp(config);
 </script>
-<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+<script src="https://rawgit.com/aframevr/aframe/c4aa63e/dist/aframe-master.min.js"></script>
 <script src="https://unpkg.com/aframe-environment-component@1.0.0/index.js"></script>
 <script src="https://unpkg.com/aframe-animation-component@4.1.1/dist/aframe-animation-component.min.js"></script>
 <script src="https://unpkg.com/aframe-proxy-event-component@1.1.1/dist/aframe-proxy-event-component.min.js"></script>
@@ -61,7 +61,7 @@ firebase.initializeApp(config);
       vive-controls="hand: right; model:false" 
       oculus-touch-controls="hand: right; model:false"
       haptics="dur: 40"
-      raycaster="objects: .keyboard-raycastable; showLine: true; far: 3;"
+      raycaster="objects: .keyboard-raycastable; showLine: true; far: 3; interval: 50"
       >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
