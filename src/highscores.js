@@ -5,20 +5,34 @@ AFRAME.registerComponent('highscores', {
 
   init: function(){
     this.scores = null;
-    this.db = firebase.database().ref('scores').orderByValue().limitToFirst(10);
-    this.db.on('value', this.updateScore.bind(this), this.updateError.bind(this));
+    var db = firebase.database().ref('scores');
+    db.orderByValue().limitToFirst(10).on('value', this.updateScore.bind(this), this.updateError.bind(this));
   },
   updateScore: function(data){
     var data = data.val()
+    if (!data) return;
     this.scores = Object.values(data);
+    if (this.scores.length < 10){
+      for (var i = this.scores.length; i < 10; i++) {
+        this.scores.push({name: 'noname', score: 0});
+      }
+    }
     this.scores.sort(function(a,b){ return a['score'] < b['score'] ? 1 : a['score'] > b['score'] ? -1 : 0})
     this.update();
   }, 
   updateError: function(err){
     console.error(err);
   },
+  goodScore: function(score){
+    if (!this.scores) return true;
+    for (var i = 0; i < this.scores.length; i++) {
+      if (score > this.scores[i].score) return true;
+    }
+    return false;
+  },
   saveScore: function(name, score){
-    this.db.push( {name: name.substr(0, 3).toUpperCase(), score: parseInt(score) });
+    var db = firebase.database().ref('scores');
+    db.push( {name: name.toUpperCase(), score: parseInt(score) });
   },
   update: function(oldData){
     var rows = this.el.children;

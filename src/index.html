@@ -23,6 +23,7 @@ firebase.initializeApp(config);
 <script src="highscores.js"></script>
 <script src="simple-keyboard.js"></script>
 <script src="button.js"></script>
+<script src="proxy-event-detail.js"></script>
 
 </head>
 <body>
@@ -45,7 +46,13 @@ firebase.initializeApp(config);
     </a-assets>
     <a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>
 
-    <a-entity simple-keyboard position="0 1.4 -.5"></a-entity>
+    <a-entity id="keyboard" 
+      simple-keyboard="label:You made it to the TOP 10!\nEnter your name:; labelColor: #ff4; fontColor: #fff; width: 1.0; filters: allcaps; maxlength: 10" 
+      position="0 1.38 -1.18" rotation="-12 0 0" visible="false"
+      animation__open="property: visible; to: true; startEvents: askname; dur: 4000"
+      proxy-event-detail="event: keyboard-accepted; to: #super; as: savescore"
+      >
+    </a-entity>
         
     <a-entity id="lefthand" 
       vive-controls="hand: left; model:false" 
@@ -61,7 +68,9 @@ firebase.initializeApp(config);
       vive-controls="hand: right; model:false" 
       oculus-touch-controls="hand: right; model:false"
       haptics="dur: 40"
-      raycaster="objects: .keyboard-raycastable; showLine: true; far: 3; interval: 50"
+      raycaster="objects: .keyboard-raycastable; showLine: false; far: 3; interval: 30; enabled: false"
+      animation__raycaster="property: raycaster.enabled; from: false; to: true; startEvents: askname; dur: 4000"
+      animation__raycasterline="property: raycaster.showLine; from: false; to: true; startEvents: askname; dur: 4000"
       >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
@@ -71,7 +80,9 @@ firebase.initializeApp(config);
 
     <a-entity id="super"  position="0 1 -0.7" rotation="0 0 0"
       supersays
-      proxy-event="event: gameover; to: #startbutton, #messages, #board, #clockbg, #soundfail; as: gameover"
+      proxy-event__0="event: gameover; to: #messages, #clockbg, #soundfail; as: gameover"
+      proxy-event__1="event: restart; to: #startbutton, #board"
+      proxy-event__2="event: askname; to: #keyboard, #righthand; as: askname"
     >
       <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim" material="color:#800"
         animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit">
@@ -114,11 +125,11 @@ firebase.initializeApp(config);
       animation__position="property: position; from: 0 1.65 -0.7; to: 0 1.65 -50; startEvents: focus; dur: 8000; easing: easeOutCubic"
       animation__opacity="property: text.opacity; from: 1; to: 0; startEvents: focus; dur: 400"
 
-      animation__enabled2="property: button.enabled; from: false; to: true; delay: 4000; startEvents: gameover"
-      animation__visible2="property: visible; from: false; to: true; delay: 4000; startEvents: gameover;"
-      animation__color2="property: text.color; from: #FFF; to: #6db4e7; delay: 4000; startEvents: gameover; dur: 800"
-      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 4000; startEvents: gameover; dur: 800; easing: easeOutElastic"
-      animation__opacity2="property: text.opacity; from: 0; to: 1; delay: 4000; startEvents: gameover; dur: 800;"
+      animation__enabled2="property: button.enabled; from: false; to: true; delay: 4000; startEvents: restart"
+      animation__visible2="property: visible; from: false; to: true; delay: 4000; startEvents: restart;"
+      animation__color2="property: text.color; from: #FFF; to: #6db4e7; delay: 4000; startEvents: restart; dur: 800"
+      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 4000; startEvents: restart; dur: 800; easing: easeOutElastic"
+      animation__opacity2="property: text.opacity; from: 0; to: 1; delay: 4000; startEvents: restart; dur: 800;"
 
       proxy-event="event: focus; to: #super, #board, #loopsound, #clockbg; as: startgame"
     >
@@ -127,7 +138,7 @@ firebase.initializeApp(config);
   
     <a-entity id="board" position="0 -2 -2.2"
         animation__pos="property: position; from: 0 -2 -2.2; to: 0 1.65 -2.2; dur: 1500; easing: easeOutElastic; delay: 600; startEvents: startgame"
-        animation__pos2="property: position; from: 0 1.65 -2.2; to: 0 2.3 -2.4; dur: 1500; easing: easeInOutCubic; delay: 3000; startEvents: gameover"
+        animation__pos2="property: position; from: 0 1.65 -2.2; to: 0 2.3 -2.4; dur: 1500; easing: easeInOutCubic; delay: 3000; startEvents: restart"
       >
       <a-entity id="loopsound" sound="src:#loop; on: startgame; loop: true"></a-entity>
       <a-entity id="level" mixin="font" text="value:Level;width:2.5" position="-0.3 -0.049 0"></a-entity>

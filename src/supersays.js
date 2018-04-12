@@ -26,6 +26,7 @@ AFRAME.registerComponent('supersays', {
     this.rightPrevY = this.rightHand.position.y;
     this.a = new THREE.Vector3();
     this.b = new THREE.Vector3();
+    this.el.addEventListener('savescore', this.saveScore.bind(this));
   },
   nextSong: function(){
     this.state = 1; // 0 paused, 1 supersays, 2 playersays
@@ -79,10 +80,19 @@ AFRAME.registerComponent('supersays', {
       this.gameOver(); 
     }
   },
+  saveScore: function(ev){
+    document.querySelector('[highscores]').components.highscores.saveScore(ev.detail.value, this.points);
+  },
   gameOver: function(){
     this.state = 0;
     this.say("GAME OVER");
     document.getElementById('loopsound').components.sound.stopSound();
+    if (document.querySelector('[highscores]').components.highscores.goodScore(this.points)){
+      this.el.emit("askname");
+    }
+    else {
+      this.el.emit("restart");
+    }
     this.el.emit("gameover");
   },
   locateHit: function(v){
