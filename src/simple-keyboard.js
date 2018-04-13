@@ -18,13 +18,14 @@ AFRAME.registerComponent('simple-keyboard', {
 
   init: function(){
     this.KEYBOARDS = {
-      'basic': {img: "./sk-basic.png", layout: [{"key":"1", "x":0.053, "y":0.089, "w":0.065, "h":0.167}, {"key":"2", "x":0.124, "y":0.089, "w":0.065, "h":0.167}, {"key":"3", "x":0.194, "y":0.089, "w":0.066, "h":0.167}, {"key":"4", "x":0.265, "y":0.089, "w":0.065, "h":0.167}, {"key":"5", "x":0.334, "y":0.089, "w":0.066, "h":0.167}, {"key":"6", "x":0.406, "y":0.089, "w":0.065, "h":0.167}, {"key":"7", "x":0.476, "y":0.089, "w":0.065, "h":0.167}, {"key":"8", "x":0.545, "y":0.089, "w":0.066, "h":0.167}, {"key":"9", "x":0.617, "y":0.089, "w":0.065, "h":0.167}, {"key":"0", "x":0.687, "y":0.089, "w":0.065, "h":0.167}, {"key":"Escape", "x":0.836, "y":0.101, "w":0.079, "h":0.158}, {"key":"Delete", "x":0.82, "y":0.507, "w":0.116, "h":0.132}, {"key":"Enter", "x":0.82, "y":0.726, "w":0.116, "h":0.164}, {"key":"q", "x":0.054, "y":0.308, "w":0.065, "h":0.167}, {"key":"w", "x":0.124, "y":0.308, "w":0.065, "h":0.167}, {"key":"e", "x":0.194, "y":0.308, "w":0.066, "h":0.167}, {"key":"r", "x":0.265, "y":0.308, "w":0.065, "h":0.167}, {"key":"t", "x":0.334, "y":0.308, "w":0.066, "h":0.167}, {"key":"y", "x":0.406, "y":0.308, "w":0.065, "h":0.167}, {"key":"u", "x":0.476, "y":0.308, "w":0.065, "h":0.167}, {"key":"i", "x":0.545, "y":0.308, "w":0.066, "h":0.167}, {"key":"o", "x":0.617, "y":0.308, "w":0.065, "h":0.167}, {"key":"p", "x":0.687, "y":0.308, "w":0.065, "h":0.167}, {"key":"a", "x":0.081, "y":0.519, "w":0.065, "h":0.167}, {"key":"s", "x":0.151, "y":0.519, "w":0.066, "h":0.167}, {"key":"d", "x":0.222, "y":0.519, "w":0.065, "h":0.167}, {"key":"f", "x":0.291, "y":0.519, "w":0.066, "h":0.167}, {"key":"g", "x":0.363, "y":0.519, "w":0.065, "h":0.167}, {"key":"h", "x":0.433, "y":0.519, "w":0.065, "h":0.167}, {"key":"j", "x":0.502, "y":0.519, "w":0.066, "h":0.167}, {"key":"k", "x":0.574, "y":0.519, "w":0.065, "h":0.167}, {"key":"l", "x":0.644, "y":0.519, "w":0.065, "h":0.167}, {"key":"z", "x":0.152, "y":0.728, "w":0.065, "h":0.167}, {"key":"x", "x":0.221, "y":0.728, "w":0.066, "h":0.167}, {"key":"c", "x":0.292, "y":0.728, "w":0.065, "h":0.167}, {"key":"v", "x":0.363, "y":0.728, "w":0.065, "h":0.167}, {"key":"b", "x":0.432, "y":0.728, "w":0.066, "h":0.167}, {"key":"n", "x":0.503, "y":0.728, "w":0.065, "h":0.167}, {"key":"m", "x":0.574, "y":0.728, "w":0.065, "h":0.167}] }
+      'basic': {img: "./sk-basic.png", layout: [{"key":"f", "x":0.345, "y":0.423, "w":0.071, "h":0.189}, {"key":"g", "x":0.416, "y":0.423, "w":0.071, "h":0.189}, {"key":"1", "x":0.093, "y":0.042, "w":0.071, "h":0.187}, {"key":"2", "x":0.164, "y":0.042, "w":0.071, "h":0.187}, {"key":"3", "x":0.234, "y":0.042, "w":0.071, "h":0.187}, {"key":"4", "x":0.304, "y":0.042, "w":0.071, "h":0.187}, {"key":"5", "x":0.375, "y":0.042, "w":0.071, "h":0.187}, {"key":"6", "x":0.445, "y":0.042, "w":0.071, "h":0.187}, {"key":"7", "x":0.515, "y":0.042, "w":0.071, "h":0.187}, {"key":"8", "x":0.585, "y":0.042, "w":0.071, "h":0.187}, {"key":"9", "x":0.656, "y":0.042, "w":0.072, "h":0.187}, {"key":"0", "x":0.727, "y":0.042, "w":0.07, "h":0.187}, {"key":"Delete", "x":0.853, "y":0.056, "w":0.113, "h":0.146}, {"key":"Enter", "x":0.854, "y":0.386, "w":0.113, "h":0.267}, {"key":"Escape", "x":0.883, "y":0.779, "w":0.083, "h":0.14}, {"key":"Shift", "x":0.016, "y":0.623, "w":0.088, "h":0.187}, {"key":"q", "x":0.093, "y":0.228, "w":0.071, "h":0.197}, {"key":"w", "x":0.164, "y":0.228, "w":0.071, "h":0.197}, {"key":"e", "x":0.234, "y":0.228, "w":0.071, "h":0.197}, {"key":"r", "x":0.304, "y":0.228, "w":0.071, "h":0.197}, {"key":"t", "x":0.375, "y":0.228, "w":0.071, "h":0.197}, {"key":"y", "x":0.445, "y":0.228, "w":0.071, "h":0.197}, {"key":"u", "x":0.515, "y":0.228, "w":0.071, "h":0.197}, {"key":"i", "x":0.585, "y":0.228, "w":0.071, "h":0.197}, {"key":"o", "x":0.656, "y":0.228, "w":0.072, "h":0.197}, {"key":"p", "x":0.727, "y":0.228, "w":0.07, "h":0.197}, {"key":"a", "x":0.134, "y":0.423, "w":0.071, "h":0.189}, {"key":"s", "x":0.205, "y":0.423, "w":0.071, "h":0.189}, {"key":"d", "x":0.275, "y":0.423, "w":0.071, "h":0.189}, {"key":"h", "x":0.486, "y":0.423, "w":0.071, "h":0.189}, {"key":"j", "x":0.556, "y":0.423, "w":0.071, "h":0.189}, {"key":"k", "x":0.626, "y":0.423, "w":0.072, "h":0.189}, {"key":"l", "x":0.698, "y":0.423, "w":0.07, "h":0.189}, {"key":"z", "x":0.213, "y":0.611, "w":0.071, "h":0.185}, {"key":"x", "x":0.284, "y":0.611, "w":0.071, "h":0.185}, {"key":"c", "x":0.354, "y":0.611, "w":0.071, "h":0.185}, {"key":"v", "x":0.424, "y":0.611, "w":0.071, "h":0.185}, {"key":"b", "x":0.495, "y":0.611, "w":0.071, "h":0.185}, {"key":"n", "x":0.565, "y":0.611, "w":0.072, "h":0.185}, {"key":"m", "x":0.636, "y":0.611, "w":0.07, "h":0.185}, {"key":" ", "x":0.257, "y":0.818, "w":0.438, "h":0.136}] }
     };
 
     this.keys = null;
     this.focused = false;
     this.keyHover = null;
     this.prevCheckTime = null;
+    this.shift = false;
 
     this.rawValue = this.data.value;
     this.defaultValue = this.data.value;
@@ -53,6 +54,7 @@ AFRAME.registerComponent('simple-keyboard', {
   },
 
   filter: function(str){
+    if (str == '') return '';
     for (var i = 0; i < this.data.filters.length; i++) {
       switch(this.data.filters[i]){
         case 'allcaps': 
@@ -67,9 +69,6 @@ AFRAME.registerComponent('simple-keyboard', {
         case 'trim':
           str = str.trim();
           break;
-        case 'hello':
-          if (str == 'hello') str += ' world!';
-        break;
       }
     }
     return this.data.maxlength > 0 ? str.substr(0, this.data.maxlength) : str;
@@ -86,12 +85,17 @@ AFRAME.registerComponent('simple-keyboard', {
         this.data.value = this.filter(this.rawValue);
         this.textInput.setAttribute('text', {value: this.data.value});
       break;
+      case 'Shift':
+        this.shift = !this.shift;
+        this.keyHover.el.setAttribute('material', {color: this.shift ? this.data.hoverColor : this.data.bgColor});
+        return;
+      break;
       case 'Escape':
         this.dismiss();
       break;
       default:
-        if (this.data.maxlength > 0 && this.data.value.length > this.data.maxlength) { break; }
-        this.rawValue += this.keyHover.key;
+        if (this.data.maxlength > 0 && this.rawValue.length > this.data.maxlength) { break; }
+        this.rawValue += this.shift ? this.keyHover.key.toUpperCase() : this.keyHover.key;
         this.data.value = this.filter(this.rawValue);
         this.textInput.setAttribute('text', {value: this.data.value});
       break;
@@ -117,7 +121,7 @@ AFRAME.registerComponent('simple-keyboard', {
 
   blur: function(ev){
     this.focused = false;
-    if (this.keyHover) this.keyHover.el.setAttribute('material', {color: this.data.bgColor});
+    if (this.keyHover && this.keyHover.key != 'Shift') this.keyHover.el.setAttribute('material', {color: this.data.bgColor});
     this.keyHover = null;
   },
 
@@ -185,7 +189,7 @@ AFRAME.registerComponent('simple-keyboard', {
       for (var i = 0; i < keys.length; i++) {
         var k = keys[i];
         if (uv.x > k.x && uv.x < k.x + k.w && (1.0 - uv.y) > k.y && (1.0 - uv.y) < k.y + k.h) {
-          if (this.keyHover) this.keyHover.el.setAttribute('material', {color: this.data.bgColor});
+          if (this.keyHover && (this.keyHover.key != 'Shift' || !this.shift)) this.keyHover.el.setAttribute('material', {color: this.data.bgColor});
           k.el.setAttribute('material', {color: this.data.hoverColor});
           this.keyHover = k;
           break;
