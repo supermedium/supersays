@@ -13,6 +13,8 @@ AFRAME.registerComponent('supersays', {
     this.clock = document.getElementById('clock').object3D;
     this.levelText = document.getElementById('levelv');
     this.pointsText = document.getElementById('pointsv');
+    this.floor = document.getElementById('floor');
+    this.sky = document.getElementById('sky');
     this.messages = document.getElementById('messages');
     this.noteEls = [
       document.getElementById('note0'),
@@ -103,6 +105,8 @@ AFRAME.registerComponent('supersays', {
   },
   playNote: function(note, supersays){
     if (!supersays) {
+      this.floor.emit('hit' + note);
+      this.sky.emit('hit' + note);
       this.noteEls[note].emit('hitpos');
     }
     this.noteEls[note].emit('hit');

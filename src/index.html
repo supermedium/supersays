@@ -20,16 +20,19 @@ firebase.initializeApp(config);
 <script src="https://unpkg.com/aframe-proxy-event-component@1.1.1/dist/aframe-proxy-event-component.min.js"></script>
 <script src="https://unpkg.com/aframe-haptics-component@1.4.1/dist/aframe-haptics-component.min.js"></script>
 <!--<script src="https://unpkg.com/aframe-particle-system-component@1.0.11/dist/aframe-particle-system-component.min.js"></script>-->
-<script src="supersays.js"></script>
-<script src="highscores.js"></script>
-<script src="simple-keyboard.js"></script>
-<script src="button.js"></script>
-<script src="proxy-event-detail.js"></script>
+<script src="components/supersays.js"></script>
+<script src="components/sub-object.js"></script>
+<script src="components/highscores.js"></script>
+<script src="components/simple-keyboard.js"></script>
+<script src="components/button.js"></script>
+<script src="components/proxy-event-detail.js"></script>
+<script src="components/shaders.js"></script>
 
 </head>
 <body>
   <a-scene>
     <a-assets>
+      <a-asset-item id="stageAsset" src="assets/stage.obj"></a-asset-item>
       <audio id="sound-note0" src="assets/0.ogg"></audio>
       <audio id="sound-note1" src="assets/1.ogg"></audio>
       <audio id="sound-note2" src="assets/3.ogg"></audio>
@@ -45,7 +48,24 @@ firebase.initializeApp(config);
       <a-mixin id="font" text="align: center; width: 3; font: exo2bold; letterSpacing: -1"></a-mixin>
       <a-mixin id="highscorefont" mixin="font" text="width: 1.5; wrapCount: 15"></a-mixin>
     </a-assets>
-    <a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>
+    <!--<a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>-->
+
+    <a-entity id="stageObj" obj-model="obj:#stageAsset" visible="false"></a-entity>
+    <a-entity id="sky" sub-object="from:#stageObj; name:sky" material="shader:skyShader; topColor: #1a1a1a; bottomColor: #154a55"
+      animation__hit0="property: material.bottomColor; from: #500; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit0"
+      animation__hit1="property: material.bottomColor; from: #005; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit1"
+      animation__hit2="property: material.bottomColor; from: #550; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit2"
+      animation__hit3="property: material.bottomColor; from: #050; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit3"
+    >
+    </a-entity>
+    <a-entity id="floor" sub-object="from:#stageObj; name:floor" material="shader:floorShader; lightPos: 0 1 0.3; floorColor: #171717; fogColor: #154a55"
+    >
+      <!-- cannot use animation component here, it breaks the shader (auto time uniform is not passed anymore) -->
+       <a-animation attribute="material.pulse0" from="1.0" to="0.0" dur="300" easing="ease-out-cubic" begin="hit0"></a-animation>
+       <a-animation attribute="material.pulse1" from="1.0" to="0.0" dur="300" easing="ease-out-cubic" begin="hit1"></a-animation>
+       <a-animation attribute="material.pulse2" from="1.0" to="0.0" dur="300" easing="ease-out-cubic" begin="hit2"></a-animation>
+       <a-animation attribute="material.pulse3" from="1.0" to="0.0" dur="300" easing="ease-out-cubic" begin="hit3"></a-animation>
+    </a-entity>
 
     <a-entity id="keyboard" 
       simple-keyboard="label:You made it to the TOP 10!\nEnter your name:; labelColor: #ff4; filters: title; fontColor: #fff; width: 1.0; maxlength: 10" 
