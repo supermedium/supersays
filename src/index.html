@@ -45,6 +45,13 @@ firebase.initializeApp(config);
 
       <a-mixin id="sector" scale="1 0.05 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
       <a-mixin id="sectorbase" position="0 -10 0" geometry="openEnded:true; height:20; radius:0.37; segmentsHeight:8; segmentsRadial:16; primitive:cylinder; thetaLength:90; thetaStart:-90" material="roughness:0.39"></a-mixin>
+      <a-mixin id="sectorflash" 
+        position="0 -0.1 0" 
+        geometry="primitive:ring;thetaLength:90;radiusOuter:0.35;radiusInner:0.2;segmentsTheta:11;segmentsPhi:1" 
+        material="shader:flat; transparent:true;" 
+        animation__alpha ="property: material.opacity; from: 1; to: 0; dur: 300; startEvents: hit; easing: easeOutCubic"
+        animation__scale ="property: scale; from: 1 1 1; to: 10 10 10; dur: 300; startEvents: hit; easing: easeOutCubic"
+      ></a-mixin>
 
       <a-mixin id="emissive-anim" animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.0; dur: 300; easing: easeInCubic; startEvents: hit"></a-mixin>
       <a-mixin id="pos-anim" animation__pos="property: position; from: 0 -0.015 0; to: 0 0 0; dur: 70; easing: easeInCubic; startEvents: hitpos"></a-mixin>
@@ -107,7 +114,7 @@ firebase.initializeApp(config);
       ></a-sphere>
     </a-entity>
 
-    <a-entity id="super"  position="0 1 -0.7" rotation="0 0 0"
+    <a-entity id="super" position="0 1 -0.7" rotation="0 0 0"
       supersays
       proxy-event__0="event: gameover; to: #messages, #clockbg, #soundfail, #board; as: gameover"
       proxy-event__1="event: restart; to: #startbutton"
@@ -121,24 +128,28 @@ firebase.initializeApp(config);
           animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit"></a-entity>
         <!--<a-entity position="0 -0.01 -15" particle-system="color: #EF0000,#44CC00"></a-entity>-->
         <a-entity sound="src:#sound-note0; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash" rotation="-90 -180 0" material="color:#F00"></a-entity>
       </a-entity>
       <a-entity id="note1" rotation="0 90 0" mixin="sector emissive-anim pos-anim" material="color:#008"
         animation__color ="property: material.color; from: #00F; to: #008; dur: 300; startEvents: hit">
         <a-entity mixin="sectorbase" material="color:#008"
           animation__color ="property: material.color; from: #00F; to: #008; dur: 300; startEvents: hit"></a-entity>
         <a-entity sound="src:#sound-note1; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash" rotation="-90 -180 0" material="color:#00F"></a-entity>
       </a-entity>
       <a-entity id="note2" rotation="0 180 0" mixin="sector emissive-anim pos-anim" material="color:#880"
         animation__color ="property: material.color; from: #FF0; to: #880; dur: 300; startEvents: hit">
         <a-entity mixin="sectorbase" material="color:#880"
           animation__color ="property: material.color; from: #FF0; to: #880; dur: 300; startEvents: hit"></a-entity>
         <a-entity sound="src:#sound-note2; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash" rotation="-90 -180 0" material="color:#FF0"></a-entity>
       </a-entity>
       <a-entity id="note3" rotation="0 270 0" mixin="sector emissive-anim pos-anim" material="color:#080"
         animation__color ="property: material.color; from: #0F0; to: #080; dur: 300; startEvents: hit">
         <a-entity mixin="sectorbase" material="color:#080"
           animation__color ="property: material.color; from: #0F0; to: #080; dur: 300; startEvents: hit"></a-entity>
         <a-entity sound="src:#sound-note3; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash" rotation="-90 -180 0" material="color:#0F0"></a-entity>
       </a-entity>
 
       <a-entity id="clockbg" position="0 -2 -0.6" rotation="-30 0 0" geometry="primitive:plane;width:0.8;height:0.03" material="shader:flat;color:#ccc;transparent:true;opacity:0.16"
