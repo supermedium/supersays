@@ -61,7 +61,7 @@ AFRAME.registerShader('floorShader', {
    uniform float pulse3;
    float dotsFunc(vec2 uv, float time, vec2 speed, float radius){
       uv += speed * (time / 100000.0);
-      uv *= 200.0;
+      uv *= 100.0;
       float p = 1.90 - radius;
       float g = smoothstep(p - 0.01, p + 0.01, sin(uv.x) + sin(uv.y));
       return g;

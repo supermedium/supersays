@@ -33,13 +33,16 @@ firebase.initializeApp(config);
   <a-scene>
     <a-assets>
       <a-asset-item id="stageAsset" src="assets/stage.obj"></a-asset-item>
-      <audio id="sound-note0" src="assets/0.ogg"></audio>
-      <audio id="sound-note1" src="assets/1.ogg"></audio>
-      <audio id="sound-note2" src="assets/3.ogg"></audio>
-      <audio id="sound-note3" src="assets/2.ogg"></audio>
-      <audio id="gong" src="assets/gong.ogg"></audio>
-      <audio id="loop" src="assets/loop.ogg"></audio>
-      <audio id="fail" src="assets/fail.ogg"></audio>
+      
+      <a-asset-item id="sound-note0" src="assets/0.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="sound-note1" src="assets/1.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="sound-note2" src="assets/3.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="sound-note3" src="assets/2.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="gong" src="assets/gong.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="loop" src="assets/loop2.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="fail" src="assets/fail.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="scoring" src="assets/scoring.ogg" response-type="arraybuffer"></a-asset-item>
+
       <a-mixin id="sector" scale="1 0.05 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
       <a-mixin id="sectorbase" position="0 -10 0" geometry="openEnded:true; height:20; radius:0.37; segmentsHeight:8; segmentsRadial:16; primitive:cylinder; thetaLength:90; thetaStart:-90" material="roughness:0.39"></a-mixin>
 
@@ -51,14 +54,14 @@ firebase.initializeApp(config);
     <!--<a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>-->
 
     <a-entity id="stageObj" obj-model="obj:#stageAsset" visible="false"></a-entity>
-    <a-entity id="sky" sub-object="from:#stageObj; name:sky" material="shader:skyShader; topColor: #1a1a1a; bottomColor: #154a55"
+    <a-entity id="sky" sub-object="from:#stageObj; name:sky" material="shader:skyShader; topColor: #1a1a1a; bottomColor: #0F363E"
       animation__hit0="property: material.bottomColor; from: #500; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit0"
       animation__hit1="property: material.bottomColor; from: #005; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit1"
       animation__hit2="property: material.bottomColor; from: #550; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit2"
       animation__hit3="property: material.bottomColor; from: #050; to: #154a55; dur: 1500; easing: easeOutCubic; startEvents: hit3"
     >
     </a-entity>
-    <a-entity id="floor" sub-object="from:#stageObj; name:floor" material="shader:floorShader; lightPos: 0 1 0.3; floorColor: #171717; fogColor: #154a55"
+    <a-entity id="floor" sub-object="from:#stageObj; name:floor" material="shader:floorShader; lightPos: 0 1 0.3; floorColor: #111; fogColor: #0F363E"
     >
       <!-- cannot use animation component here, it breaks the shader (auto time uniform is not passed anymore) -->
        <a-animation attribute="material.pulse0" from="1.0" to="0.0" dur="300" easing="ease-out-cubic" begin="hit0"></a-animation>
@@ -68,11 +71,13 @@ firebase.initializeApp(config);
     </a-entity>
 
     <a-entity id="keyboard" 
-      simple-keyboard="label:You made it to the TOP 10!\nEnter your name:; labelColor: #ff4; filters: title; fontColor: #fff; width: 1.0; maxlength: 10" 
-      position="0 1.38 -1.18" rotation="-12 0 0" visible="false"
-      animation__open="property: visible; to: true; startEvents: askname; dur: 4000"
-      proxy-event-detail="event: keyboard-accepted; to: #super; as: savescore"
-      proxy-event="event: keyboard-dismissed; to: #startbutton, #board; as: restart"
+      simple-keyboard="label:You made it to the TOP 10!!\nEnter your name:; labelColor: #ff4; filters: allcaps; fontColor: #fff; width: 1.0; maxlength: 10" 
+      position="0 -0.63 -1.67" rotation="-14 0 0" visible="false"
+      animation__open="property: visible; to: true; startEvents: askname; delay: 3500; dur: 40"
+      animation__open1="property: position; from: 0 -0.63 -1.67; to: 0 1 -1.2; startEvents: askname; dur: 1000; delay: 3500; easing: easeOutElastic"
+      proxy-event-detail="event: keyboard-accepted; to: #super, #startbutton, #righthand; as: savescore"
+      proxy-event="event: keyboard-dismissed; to: #startbutton, #board, #super, #righthand; as: restart"
+      proxy-event__alt="event: keyboard-dismissed; to: #super; as: raise"
       >
     </a-entity>
         
@@ -91,8 +96,10 @@ firebase.initializeApp(config);
       oculus-touch-controls="hand: right; model:false"
       haptics="dur: 40"
       raycaster="objects: .keyboard-raycastable; showLine: false; far: 3; interval: 30; enabled: false"
-      animation__raycaster="property: raycaster.enabled; from: false; to: true; startEvents: askname; dur: 4000"
-      animation__raycasterline="property: raycaster.showLine; from: false; to: true; startEvents: askname; dur: 4000"
+      animation__raycasteron="property: raycaster.enabled; from: false; to: true; startEvents: askname"
+      animation__raycasterlineon="property: raycaster.showLine; from: false; to: true; startEvents: askname"
+      animation__raycasteroff="property: raycaster.enabled; from: true; to: false; startEvents: savescore, restart"
+      animation__raycasterlineoff="property: raycaster.showLine; from: true; to: false; startEvents: savescore, restart"
       >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
@@ -102,9 +109,11 @@ firebase.initializeApp(config);
 
     <a-entity id="super"  position="0 1 -0.7" rotation="0 0 0"
       supersays
-      proxy-event__0="event: gameover; to: #messages, #clockbg, #soundfail; as: gameover"
-      proxy-event__1="event: restart; to: #startbutton, #board"
+      proxy-event__0="event: gameover; to: #messages, #clockbg, #soundfail, #board; as: gameover"
+      proxy-event__1="event: restart; to: #startbutton"
       proxy-event__2="event: askname; to: #keyboard, #righthand; as: askname"
+      animation__godown="property: position; from: 0 1 -0.7; to: 0 0.5 -0.7; dur: 1000; startEvents: askname; delay: 2000; easing: easeInOutCubic"
+      animation__goup="property: position; from: 0 0.5 -0.7; to: 0 1 -0.7; dur: 1000; startEvents: savescore, raise; delay: 1000; easing: easeInOutCubic"
     >
       <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim" material="color:#800"
         animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit">
@@ -134,7 +143,7 @@ firebase.initializeApp(config);
 
       <a-entity id="clockbg" position="0 -2 -0.6" rotation="-30 0 0" geometry="primitive:plane;width:0.8;height:0.03" material="shader:flat;color:#ccc;transparent:true;opacity:0.16"
         animation__pos="property: position; from: 0 -2 -0.6; to: 0 0.14 -0.6; dur: 1600; easing: easeOutElastic; delay: 650; startEvents: startgame"
-        animation__pos2="property: position; to: 0 -2 -0.6; from: 0 0.14 -0.6; dur: 1500; easing: easeInOutCubic; delay: 3000; startEvents: gameover"
+        animation__pos2="property: position; to: 0 -2 -0.6; from: 0 0.14 -0.6; dur: 1500; easing: easeInOutCubic; delay: 2000; startEvents: gameover"
         >
         <a-entity position="0 0 0.01" id="clock" scale="1 1 1" geometry="primitive:plane;width:0.8;height:0.03" material="shader:flat;color:#ccc"></a-entity>
       </a-entity>
@@ -142,17 +151,19 @@ firebase.initializeApp(config);
 
     <a-entity geometry="height:0.38;width:0.17" position="0 1.614 -0.747" id="starthit" rotation="0 90 0" visible="false"></a-entity>
     <a-entity id="startbutton" mixin="font" text="value: START; width: 6; color: #52ae2b" position="0 1.65 -0.7" button="hitTarget:#starthit"
+
       animation__enabled="property: button.enabled; from: true; to: false; startEvents: focus"
       animation__visible="property: visible; from: true; to: false; startEvents: focus; delay: 400"
       animation__color="property: text.color; from: #FFF; to: #6db4e7; startEvents: focus; dur: 400"
       animation__position="property: position; from: 0 1.65 -0.7; to: 0 1.65 -50; startEvents: focus; dur: 8000; easing: easeOutCubic"
       animation__opacity="property: text.opacity; from: 1; to: 0; startEvents: focus; dur: 400"
 
-      animation__enabled2="property: button.enabled; from: false; to: true; delay: 4000; startEvents: restart"
-      animation__visible2="property: visible; from: false; to: true; delay: 4000; startEvents: restart;"
-      animation__color2="property: text.color; from: #FFF; to: #6db4e7; delay: 4000; startEvents: restart; dur: 800"
-      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 4000; startEvents: restart; dur: 800; easing: easeOutElastic"
-      animation__opacity2="property: text.opacity; from: 0; to: 1; delay: 4000; startEvents: restart; dur: 800;"
+      animation__enabled2="property: button.enabled; from: false; to: true; delay: 2000; startEvents: restart, savescore"
+      animation__visible2="property: visible; from: false; to: true; delay: 2000; startEvents: restart, savescore;"
+      animation__color2="property: text.color; from: #FFF; to: #6db4e7; delay: 2000; startEvents: restart, savescore; dur: 10"
+      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 2000; startEvents: restart, savescore; dur: 10"
+      animation__opacity2="property: text.opacity; from: 0; to: 1; delay: 2000; startEvents: restart, savescore; dur: 500;"
+      animation__pop1="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutElastic; delay: 2000; dur: 1000; startEvents: restart, savescore"
 
       proxy-event="event: focus; to: #super, #board, #loopsound, #clockbg; as: startgame"
     >
@@ -161,7 +172,7 @@ firebase.initializeApp(config);
   
     <a-entity id="board" position="0 -2 -2.2"
         animation__pos="property: position; from: 0 -2 -2.2; to: 0 1.65 -2.2; dur: 1500; easing: easeOutElastic; delay: 600; startEvents: startgame"
-        animation__pos2="property: position; from: 0 1.65 -2.2; to: 0 2.3 -2.4; dur: 1500; easing: easeInOutCubic; delay: 3000; startEvents: restart"
+        animation__pos2="property: position; from: 0 1.65 -2.2; to: 0 2.3 -2.4; dur: 1500; easing: easeInOutCubic; delay: 2000; startEvents: gameover"
       >
       <a-entity id="loopsound" sound="src:#loop; on: startgame; loop: true"></a-entity>
       <a-entity id="level" mixin="font" text="value:Level;width:2.5" position="-0.3 -0.049 0"></a-entity>
@@ -224,8 +235,8 @@ firebase.initializeApp(config);
         </a-entity>
 
       </a-entity>
-
     </a-entity>
+    <a-entity id="highscoresSound" position="-3 3 -1.6" sound="src:#scoring"></a-entity>
   </a-scene>
 </body>
 </html>
