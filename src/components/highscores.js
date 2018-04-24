@@ -37,26 +37,25 @@ AFRAME.registerComponent('highscores', {
   },
   saveScore: function(name, score){
     var db = firebase.database().ref('scores');
-    db.push( {name: name.toUpperCase(), score: parseInt(score) });
+    db.push( {name: name.toLowerCase(), score: parseInt(score) });
   },
   update: function(oldData){
     var rows = this.el.children;
-    var color = new THREE.Color(0xffff00);
+    var COLORS = ['#cf568c','#cd727d','#ca956b','#c3bb5c','#9dbb71','#72bc8b','#45bca4','#499eb8','#4d8dc2', '#517ecb'];
     this.playerObjs = [];
     this.scoreObjs = [];
     for (var i = 0; i < rows.length; i++) {
       var player = rows[i].querySelector('.player');
       var score = rows[i].querySelector('.score');
       var data = this.scores ? this.scores[i] : null;
-      player.setAttribute('text', {value: data ? data.name : 'noname', color: color.getHex()});
-      score.setAttribute('text', {value: data ? data.score : 0, color: color.getHex()});
+      player.setAttribute('text', {value: data ? data.name.toLowerCase() : 'noname', color: COLORS[i]});
+      score.setAttribute('text', {value: data ? data.score : 0, color: COLORS[i]});
       player.setAttribute('position', {y: - i * this.data.spacing});
       score.setAttribute('position', {y: - i * this.data.spacing});
       player.object3D.staticPos = player.object3D.position.clone();
       score.object3D.staticPos = score.object3D.position.clone();
       this.playerObjs.push(player.object3D);
       this.scoreObjs.push(score.object3D);
-      color.offsetHSL(0.08, 0, 0);
     }
   },
   tick: function(time, delta){

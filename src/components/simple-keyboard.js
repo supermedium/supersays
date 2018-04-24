@@ -57,8 +57,11 @@ AFRAME.registerComponent('simple-keyboard', {
     if (str == '') return '';
     for (var i = 0; i < this.data.filters.length; i++) {
       switch(this.data.filters[i]){
-        case 'allcaps': 
+        case 'allupper': 
           str = str.toUpperCase(); 
+          break;
+        case 'alllower': 
+          str = str.toLowerCase(); 
           break;
         case 'title': 
           str = str.split(' ').map(s => s[0].toUpperCase() + s.substr(1)).join(' ');
