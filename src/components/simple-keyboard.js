@@ -2,6 +2,7 @@ AFRAME.registerComponent('simple-keyboard', {
   schema: {
     label: {type: 'string', default: ''},
     labelColor: {type: 'color', default: '#aaa'},
+    labelBgColor: {type: 'color', default: '#000'},
     bgColor: {type: 'color', default: '#000'},
     hoverColor: {type: 'color', default: '#1A407F'},
     pressColor: {type: 'color', default: '#5290F6'},
@@ -46,7 +47,7 @@ AFRAME.registerComponent('simple-keyboard', {
     this.textInputBg = document.createElement('a-entity');
     this.textInputBg.setAttribute('position', {x: 0, y: 0, z: -0.001});
     this.textInputBg.setAttribute('geometry', {primitive: 'plane', width: this.data.width, height: this.data.width / 10});
-    this.textInputBg.setAttribute('material', {shader: 'flat', color: this.data.bgColor});
+    this.textInputBg.setAttribute('material', {shader: 'flat', color: this.data.labelBgColor});
     this.textInput.appendChild(this.textInputBg);
 
     document.addEventListener('open', this.open.bind(this));

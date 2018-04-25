@@ -81,7 +81,7 @@ firebase.initializeApp(config);
     <a-entity bgshapes></a-entity>
 
     <a-entity id="keyboard" 
-      simple-keyboard="label:You made it to the TOP 10!!\nEnter your name:; labelColor: #41bca6; filters: alllower; fontColor: #517ecb; width: 1.0; maxlength: 10" 
+      simple-keyboard="label:You made it to the TOP 10!!\nEnter your name:; labelColor: #41bca6; labelBgColor: #1b1b1d; filters: alllower; fontColor: #517ecb; width: 1.0; maxlength: 10"
       position="0 -0.63 -1.67" rotation="-14 0 0" visible="false"
       animation__open="property: visible; to: true; startEvents: askname; delay: 3500; dur: 40"
       animation__open1="property: position; from: 0 -0.63 -1.67; to: 0 1 -1.2; startEvents: askname; dur: 1000; delay: 3500; easing: easeOutElastic"
@@ -137,7 +137,7 @@ firebase.initializeApp(config);
       animation__godown="property: position; from: 0 1 -0.7; to: 0 0.5 -0.7; dur: 1000; startEvents: askname; delay: 1000; easing: easeInOutCubic"
       animation__goup="property: position; from: 0 0.5 -0.7; to: 0 1 -0.7; dur: 1000; startEvents: savescore, raise; delay: 1000; easing: easeInOutCubic"
     >
-      <a-entity id="tablebase"  position="0 -0.5 0" geometry="openEnded:true; height:1; radius:0.37; segmentsHeight:8; segmentsRadial:32; primitive:cylinder" material="roughness:0.39; src:#gradImg"></a-entity>
+      <a-entity id="tablebase"  position="0 -0.5 0" geometry="openEnded:true; height:0.98; radius:0.37; segmentsHeight:8; segmentsRadial:32; primitive:cylinder" material="roughness:0.39; src:#gradImg"></a-entity>
 
       <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim color0"
         animation__color ="property: material.color; from: #ff6eb3; to: #994068; dur: 300; startEvents: hit"
