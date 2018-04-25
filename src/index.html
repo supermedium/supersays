@@ -48,22 +48,16 @@ firebase.initializeApp(config);
       <img src="assets/shape1.png" id="shape1Img">
       <img src="assets/shape2.png" id="shape2Img">
       <img src="assets/shape3.png" id="shape3Img">
-      <img src="assets/fillshape0.png" id="fillshape0Img">
-      <img src="assets/fillshape1.png" id="fillshape1Img">
-      <img src="assets/fillshape2.png" id="fillshape2Img">
-      <img src="assets/fillshape3.png" id="fillshape3Img">
-<!--
-      <a-mixin id="color0" material="color: #cf568c"></a-mixin>
-      <a-mixin id="color1" material="color: #517ecb"></a-mixin>
-      <a-mixin id="color2" material="color: #41bca6"></a-mixin>
-      <a-mixin id="color3" material="color: #c8bb59"></a-mixin>
--->
+
       <a-mixin id="color0" material="color: #994068"></a-mixin>
       <a-mixin id="color1" material="color: #3d5f99"></a-mixin>
       <a-mixin id="color2" material="color: #308a79"></a-mixin>
       <a-mixin id="color3" material="color: #948a41"></a-mixin>
 
-      <a-mixin id="particles" particle-system="color: #ffffff, #000000; preset: dust; maxAge: 2; duration: 0.01; particleCount: 10; enabled:false; size: 0.06; positionSpread: 0.3 0.3 0.3; type: 3; accelerationValue: 0 20 0; velocityValue: 0 -20 0; velocitySpread: 0.2 8 0.2"></a-mixin>
+      <a-mixin id="color0hit" material="color: #ff6eb3"></a-mixin>
+      <a-mixin id="color1hit" material="color: #68a1ff"></a-mixin>
+      <a-mixin id="color2hit" material="color: #45ffde"></a-mixin>
+      <a-mixin id="color3hit" material="color: #fff072"></a-mixin>
 
       <a-mixin id="sector" scale="1 0.05 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
 
@@ -71,10 +65,10 @@ firebase.initializeApp(config);
       <a-mixin id="floortile" position="0 -0.012 -0.7" geometry="radius:1.11; primitive:circle; thetaLength:90; segments:16" material="roughness:0.39;"></a-mixin>
       <a-mixin id="sectorflash" 
         position="0 -0.1 0" 
-        geometry="primitive:ring;thetaLength:90;radiusOuter:0.35;radiusInner:0.2;segmentsTheta:11;segmentsPhi:1" 
-        material="shader:flat; transparent:true;" 
-        animation__alpha ="property: material.opacity; from: 1; to: 0; dur: 200; startEvents: hit; easing: easeOutCubic"
-        animation__scale ="property: scale; from: 1 1 1; to: 1 1 1; dur: 100; startEvents: hit; easing: easeOutCubic"
+        geometry="radiusOuter: 0.5; radiusInner: 0.44; primitive: ring; segmentsPhi: 1; segmentsTheta: 11; thetaLength: 90"
+        material="shader:flat; transparent:true; opacity: 0" 
+        animation__alpha ="property: material.opacity; from: 1; to: 0; dur: 400; startEvents: hit; easing: easeOutCubic"
+        animation__scale ="property: scale; from: 1 1 1; to: 1.02 1.02 1.02; dur: 400; startEvents: hit; easing: easeOutCubic"
       ></a-mixin>
 
       <a-mixin id="emissive-anim" animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.0; dur: 300; easing: easeInCubic; startEvents: hit"></a-mixin>
@@ -137,45 +131,37 @@ firebase.initializeApp(config);
 
     <a-entity id="super" position="0 1 -0.7" rotation="0 0 0"
       supersays
-      proxy-event__0="event: gameover; to: #messages, #clockbg, #soundfail, #board; as: gameover"
+      proxy-event__0="event: gameover; to: #messages, #clockbg, #soundfail, #board, #note0, #note1, #note2, #note3; as: gameover"
       proxy-event__1="event: restart; to: #startbutton"
       proxy-event__2="event: askname; to: #keyboard, #righthand; as: askname"
-      animation__godown="property: position; from: 0 1 -0.7; to: 0 0.5 -0.7; dur: 1000; startEvents: askname; delay: 2000; easing: easeInOutCubic"
+      animation__godown="property: position; from: 0 1 -0.7; to: 0 0.5 -0.7; dur: 1000; startEvents: askname; delay: 1000; easing: easeInOutCubic"
       animation__goup="property: position; from: 0 0.5 -0.7; to: 0 1 -0.7; dur: 1000; startEvents: savescore, raise; delay: 1000; easing: easeInOutCubic"
     >
       <a-entity id="tablebase"  position="0 -0.5 0" geometry="openEnded:true; height:1; radius:0.37; segmentsHeight:8; segmentsRadial:32; primitive:cylinder" material="roughness:0.39; src:#gradImg"></a-entity>
 
       <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim color0"
-        animation__color ="property: material.color; from: #ff6eb3; to: #994068; dur: 300; startEvents: hit">
+        animation__color ="property: material.color; from: #ff6eb3; to: #994068; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #994068; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note0; on: hit; poolSize: 20"></a-entity>
-        <a-entity mixin="sectorflash color0" rotation="-90 -180 0"></a-entity>
-        <a-entity mixin="particles" position="-0.16 0 0.16" particle-system="texture: assets/fillshape0.png"
-          animation__hit="property: particle-system.enabled; from: false; to: true; dur: 1; startEvents: hit"
-        ></a-entity>
+        <a-entity mixin="sectorflash color0hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
       <a-entity id="note1" rotation="0 90 0" mixin="sector emissive-anim pos-anim color1"
-        animation__color ="property: material.color; from: #68a1ff; to: #3d5f99; dur: 300; startEvents: hit">
+        animation__color ="property: material.color; from: #68a1ff; to: #3d5f99; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #3d5f99; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note1; on: hit; poolSize: 20"></a-entity>
-        <a-entity mixin="sectorflash color1" rotation="-90 -180 0"></a-entity>
-        <a-entity mixin="particles" position="-0.16 0 0.16" particle-system="texture: assets/fillshape1.png"
-          animation__hit="property: particle-system.enabled; from: false; to: true; dur: 1; startEvents: hit"
-        ></a-entity>
+        <a-entity mixin="sectorflash color1hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
       <a-entity id="note2" rotation="0 180 0" mixin="sector emissive-anim pos-anim color2"
-        animation__color ="property: material.color; from: #45ffde; to: #308a79; dur: 300; startEvents: hit">
+        animation__color ="property: material.color; from: #45ffde; to: #308a79; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #308a79; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note2; on: hit; poolSize: 20"></a-entity>
-        <a-entity mixin="sectorflash color2" rotation="-90 -180 0"></a-entity>
-        <a-entity mixin="particles" position="-0.16 0 0.16" particle-system="texture: assets/fillshape2.png"
-          animation__hit="property: particle-system.enabled; from: false; to: true; dur: 1; startEvents: hit"
-        ></a-entity>
+        <a-entity mixin="sectorflash color2hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
       <a-entity id="note3" rotation="0 270 0" mixin="sector emissive-anim pos-anim color3"
-        animation__color ="property: material.color; from: #fff072; to: #948a41; dur: 300; startEvents: hit">
+        animation__color ="property: material.color; from: #fff072; to: #948a41; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #948a41; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note3; on: hit; poolSize: 20"></a-entity>
-        <a-entity mixin="sectorflash color3" rotation="-90 -180 0"></a-entity>
-        <a-entity mixin="particles" position="-0.16 0 0.16" particle-system="texture: assets/fillshape3.png"
-          animation__hit="property: particle-system.enabled; from: false; to: true; dur: 1; startEvents: hit"
-        ></a-entity>
+        <a-entity mixin="sectorflash color3hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
 
       <a-entity id="clockbg" position="0 -2 -0.6" rotation="-30 0 0" geometry="primitive:plane;width:0.8;height:0.05" material="shader:flat; color:#424248"
@@ -259,23 +245,23 @@ firebase.initializeApp(config);
     <a-entity id="startbutton" geometry="primitive:plane; height:0.4; width:0.8" material="shader:flat; depthWrite: false; transparent:true; src:#playImg" position="0 1.65 -0.7" button="hitTarget:#starthit"
 
       animation__enabled="property: button.enabled; from: true; to: false; startEvents: focus"
-      animation__visible="property: visible; from: true; to: false; startEvents: focus; delay: 400"
-      animation__color="property: text.color; from: #FFF; to: #6db4e7; startEvents: focus; dur: 400"
+      animation__visible="property: material.opacity; from: 1; to: 0; startEvents: focus; delay: 400"
       animation__position="property: position; from: 0 1.65 -0.7; to: 0 1.65 -50; startEvents: focus; dur: 8000; easing: easeOutCubic"
-      animation__opacity="property: text.opacity; from: 1; to: 0; startEvents: focus; dur: 400"
 
-      animation__enabled2="property: button.enabled; from: false; to: true; delay: 2000; startEvents: restart, savescore"
-      animation__visible2="property: visible; from: false; to: true; delay: 2000; startEvents: restart, savescore;"
-      animation__color2="property: text.color; from: #FFF; to: #6db4e7; delay: 2000; startEvents: restart, savescore; dur: 10"
-      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 2000; startEvents: restart, savescore; dur: 10"
-      animation__opacity2="property: text.opacity; from: 0; to: 1; delay: 2000; startEvents: restart, savescore; dur: 500;"
-      animation__pop1="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutElastic; delay: 2000; dur: 1000; startEvents: restart, savescore"
+      animation__enabled2="property: button.enabled; from: false; to: true; delay: 1700; startEvents: restart, savescore"
+      animation__visible2="property: material.opacity; from: 0; to: 1; delay: 1700; startEvents: restart, savescore"
+      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 1700; startEvents: restart, savescore; dur: 10"
+      animation__pop1="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutElastic; delay: 1700; dur: 1000; startEvents: restart, savescore"
 
-      proxy-event="event: focus; to: #super, #board, #loopsound, #clockbg; as: startgame"
+      proxy-event="event: focus; to: #super, #board, #loopsound, #clockbg, #playExplosion; as: startgame"
     >
       <a-entity sound="src:#gong; on: focus"></a-entity>
     </a-entity>
 
+    <a-entity id="playExplosion" position="0 1.614 -.8" scale="0 0 0" geometry="primitive:ring; segmentsPhi:1; segmentsTheta:30; radiusInner:1.11" material="shader:flat; depthWrite:false; transparent:true; side:double; color:#fff072" 
+      animation__hit1="property:scale; from:0 0 0; to:0.4 0.4 0.4; dur:600; easing:easeOutCubic; startEvents:startgame" 
+      animation__hit2="property:material.opacity; from:0.6; to:0; dur:600; easing:easeOutCubic; startEvents:startgame" 
+      ></a-entity>
 
   </a-scene>
 </body>

@@ -32,7 +32,6 @@ AFRAME.registerComponent('bgshapes', {
     shape.position.copy(v);
   },
   addShape: function(){
-    console.log('addshape');
     var shape = new THREE.Mesh( 
       this.planeGeometry, 
       this.materials[Math.floor(Math.random() * this.materials.length
@@ -49,7 +48,6 @@ AFRAME.registerComponent('bgshapes', {
     this.shapes.push(shape);
   },
   removeShape: function(){
-    console.log('removeshape');
     this.el.object3D.remove(this.shapes.pop());
   },
   update: function(oldData){
