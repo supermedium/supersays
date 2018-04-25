@@ -2,41 +2,101 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+<script type="text/javascript">
+  var config = {
+  apiKey: "AIzaSyBr7xarwCbbm2NXpp6yt1RiieXmahzstc0",
+  authDomain: "super-says.firebaseapp.com",
+  databaseURL: "https://super-says.firebaseio.com",
+  projectId: "super-says",
+  storageBucket: "super-says.appspot.com",
+  messagingSenderId: "942871960205"
+};
+firebase.initializeApp(config);
+</script>
+<script src="https://rawgit.com/aframevr/aframe/c4aa63e/dist/aframe-master.min.js"></script>
 <script src="https://unpkg.com/aframe-environment-component@1.0.0/index.js"></script>
 <script src="https://unpkg.com/aframe-animation-component@4.1.1/dist/aframe-animation-component.min.js"></script>
 <script src="https://unpkg.com/aframe-proxy-event-component@1.1.1/dist/aframe-proxy-event-component.min.js"></script>
 <script src="https://unpkg.com/aframe-haptics-component@1.4.1/dist/aframe-haptics-component.min.js"></script>
-<script src="supersays.js"></script>
-<script src="highscores.js"></script>
-<script src="button.js"></script>
+<script src="https://unpkg.com/aframe-particle-system-component@1.0.11/dist/aframe-particle-system-component.min.js"></script>
+<script src="components/supersays.js"></script>
+<script src="components/highscores.js"></script>
+<script src="components/simple-keyboard.js"></script>
+<script src="components/button.js"></script>
+<script src="components/bgshapes.js"></script>
+<script src="components/proxy-event-detail.js"></script>
+
 </head>
 <body>
   <a-scene>
     <a-assets>
-      <audio id="sound-note0" src="assets/0.ogg"></audio>
-      <audio id="sound-note1" src="assets/1.ogg"></audio>
-      <audio id="sound-note2" src="assets/3.ogg"></audio>
-      <audio id="sound-note3" src="assets/2.ogg"></audio>
-      <audio id="gong" src="assets/gong.ogg"></audio>
-      <audio id="loop" src="assets/loop.ogg"></audio>
-      <audio id="fail" src="assets/fail.ogg"></audio>
+      <a-asset-item id="sound-note0" src="assets/0.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="sound-note1" src="assets/1.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="sound-note2" src="assets/3.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="sound-note3" src="assets/2.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="gong" src="assets/gong.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="loop" src="assets/loop2.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="fail" src="assets/fail.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="scoring" src="assets/scoring.ogg" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="fontSrc" src="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/rubik/Rubik-Regular.json"></a-asset-item>
+
+      <img src="assets/play.png" id="playImg">
+      <img src="assets/logo.png" id="logoImg">
+      <img src="assets/grad.png" id="gradImg">
+      <img src="assets/shape0.png" id="shape0Img">
+      <img src="assets/shape1.png" id="shape1Img">
+      <img src="assets/shape2.png" id="shape2Img">
+      <img src="assets/shape3.png" id="shape3Img">
+
+      <a-mixin id="color0" material="color: #994068"></a-mixin>
+      <a-mixin id="color1" material="color: #3d5f99"></a-mixin>
+      <a-mixin id="color2" material="color: #308a79"></a-mixin>
+      <a-mixin id="color3" material="color: #948a41"></a-mixin>
+
+      <a-mixin id="color0hit" material="color: #ff6eb3"></a-mixin>
+      <a-mixin id="color1hit" material="color: #68a1ff"></a-mixin>
+      <a-mixin id="color2hit" material="color: #45ffde"></a-mixin>
+      <a-mixin id="color3hit" material="color: #fff072"></a-mixin>
+
       <a-mixin id="sector" scale="1 0.05 1" geometry="segmentsHeight:8;segmentsWidth:16;primitive:sphere;phiLength:90;thetaLength:90; radius: 0.4" material="roughness:0.39"></a-mixin>
-      <a-mixin id="sectorbase" position="0 -10 0" geometry="openEnded:true; height:20; radius:0.37; segmentsHeight:8; segmentsRadial:16; primitive:cylinder; thetaLength:90; thetaStart:-90" material="roughness:0.39"></a-mixin>
+
+      <a-mixin id="tabletile" position="0 0.02 -0.7" geometry="openEnded: true; height:0.09; radius:0.371; segmentsHeight:8; segmentsRadial:32; primitive:cylinder; thetaLength:90" material="roughness:0.39"></a-mixin>
+      <a-mixin id="floortile" position="0 -0.012 -0.7" geometry="radius:1.11; primitive:circle; thetaLength:90; segments:16" material="roughness:0.39;"></a-mixin>
+      <a-mixin id="sectorflash" 
+        position="0 -0.1 0" 
+        geometry="radiusOuter: 0.5; radiusInner: 0.44; primitive: ring; segmentsPhi: 1; segmentsTheta: 11; thetaLength: 90"
+        material="shader:flat; transparent:true; opacity: 0" 
+        animation__alpha ="property: material.opacity; from: 1; to: 0; dur: 400; startEvents: hit; easing: easeOutCubic"
+        animation__scale ="property: scale; from: 1 1 1; to: 1.02 1.02 1.02; dur: 400; startEvents: hit; easing: easeOutCubic"
+      ></a-mixin>
 
       <a-mixin id="emissive-anim" animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.0; dur: 300; easing: easeInCubic; startEvents: hit"></a-mixin>
       <a-mixin id="pos-anim" animation__pos="property: position; from: 0 -0.015 0; to: 0 0 0; dur: 70; easing: easeInCubic; startEvents: hitpos"></a-mixin>
-      <a-mixin id="font" text="align: center; width: 3; font: exo2bold; letterSpacing: -1"></a-mixin>
-      <a-mixin id="highscorefont" mixin="font" text="width: 1.5; wrapCount: 15"></a-mixin>
+      <a-mixin id="font" text="shader: msdf; align: center; width: 3; font: https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/rubik/Rubik-Regular.json; letterSpacing: 0"></a-mixin>
+      <a-mixin id="highscorefont" mixin="font" text="width: 1.8; wrapCount: 16"></a-mixin>
     </a-assets>
-    <a-entity environment="preset: poison; skyColor: #1a1a1a; horizonColor: #154a55; lightPosition: 0 2.34 1; fog: 0.87; ground: hills; groundYScale: 2.83; groundColor: #171717; groundColor2: #161616; dressing: none; grid: 1x1; gridColor: #207384"></a-entity>
 
+    <a-sky color="#29292d"></a-sky>
+    <a-entity bgshapes></a-entity>
+
+    <a-entity id="keyboard" 
+      simple-keyboard="label:You made it to the TOP 10!!\nEnter your name:; labelColor: #41bca6; filters: alllower; fontColor: #517ecb; width: 1.0; maxlength: 10" 
+      position="0 -0.63 -1.67" rotation="-14 0 0" visible="false"
+      animation__open="property: visible; to: true; startEvents: askname; delay: 3500; dur: 40"
+      animation__open1="property: position; from: 0 -0.63 -1.67; to: 0 1 -1.2; startEvents: askname; dur: 1000; delay: 3500; easing: easeOutElastic"
+      proxy-event-detail="event: keyboard-accepted; to: #super, #startbutton, #righthand; as: savescore"
+      proxy-event="event: keyboard-dismissed; to: #startbutton, #board, #super, #righthand; as: restart"
+      proxy-event__alt="event: keyboard-dismissed; to: #super; as: raise"
+      >
+    </a-entity>
+        
     <a-entity id="lefthand" 
       vive-controls="hand: left; model:false" 
       oculus-touch-controls="hand: left; model:false" 
       haptics="dur: 40"
       >
-      <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
+      <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #517ecb; emissive: #fff; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
         animation__opacity ="property: material.opacity; from: 1.0; to: 0.3; dur: 800; startEvents: hit"
       ></a-sphere>
@@ -45,79 +105,83 @@
       vive-controls="hand: right; model:false" 
       oculus-touch-controls="hand: right; model:false"
       haptics="dur: 40"
+      raycaster="objects: .keyboard-raycastable; showLine: false; far: 3; interval: 30; enabled: false"
+      animation__raycasteron="property: raycaster.enabled; from: false; to: true; startEvents: askname"
+      animation__raycasterlineon="property: raycaster.showLine; from: false; to: true; startEvents: askname"
+      animation__raycasteroff="property: raycaster.enabled; from: true; to: false; startEvents: savescore, restart"
+      animation__raycasterlineoff="property: raycaster.showLine; from: true; to: false; startEvents: savescore, restart"
       >
-      <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #5bb4f4; emissive: #5bb4f4; emissiveIntensity: 0.4"
+      <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #517ecb; emissive: #fff; emissiveIntensity: 0.4"
         animation__emissive="property: material.emissiveIntensity; from: 1.0; to: 0.4; dur: 800; startEvents: hit"
         animation__opacity ="property: material.opacity; from: 1.0; to: 0.3; dur: 800; startEvents: hit"
       ></a-sphere>
     </a-entity>
 
-    <a-entity id="super"  position="0 1 -0.7" rotation="0 0 0"
+    <a-entity id="floor" geometry="primitive:circle; segments:64" position="0 0 -0.7" rotation="-90.012 0 0" material="color:#434349; roughness:0.39"></a-entity>
+    
+    <a-entity rotation="0 -90 0" mixin="tabletile color0"></a-entity>
+    <a-entity rotation="0 0 0" mixin="tabletile color1"></a-entity>
+    <a-entity rotation="0 90 0" mixin="tabletile color2"></a-entity>
+    <a-entity rotation="0 180 0" mixin="tabletile color3"></a-entity>
+    
+    <a-entity mixin="floortile color0" rotation="-90 180 0"></a-entity>
+    <a-entity mixin="floortile color1" rotation="-90 -90 0"></a-entity>
+    <a-entity mixin="floortile color2" rotation="-90 0 0"></a-entity>
+    <a-entity mixin="floortile color3" rotation="-90 90 0"></a-entity>
+
+    <a-entity id="super" position="0 1 -0.7" rotation="0 0 0"
       supersays
-      proxy-event="event: gameover; to: #startbutton, #messages, #board, #clockbg, #soundfail; as: gameover"
+      proxy-event__0="event: gameover; to: #messages, #clockbg, #soundfail, #board, #note0, #note1, #note2, #note3; as: gameover"
+      proxy-event__1="event: restart; to: #startbutton"
+      proxy-event__2="event: askname; to: #keyboard, #righthand; as: askname"
+      animation__godown="property: position; from: 0 1 -0.7; to: 0 0.5 -0.7; dur: 1000; startEvents: askname; delay: 1000; easing: easeInOutCubic"
+      animation__goup="property: position; from: 0 0.5 -0.7; to: 0 1 -0.7; dur: 1000; startEvents: savescore, raise; delay: 1000; easing: easeInOutCubic"
     >
-      <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim" material="color:#800"
-        animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit">
-        <a-entity mixin="sectorbase" material="color:#800"
-          animation__color ="property: material.color; from: #F00; to: #800; dur: 300; startEvents: hit"></a-entity>
+      <a-entity id="tablebase"  position="0 -0.5 0" geometry="openEnded:true; height:1; radius:0.37; segmentsHeight:8; segmentsRadial:32; primitive:cylinder" material="roughness:0.39; src:#gradImg"></a-entity>
+
+      <a-entity id="note0" rotation="0 0 0" mixin="sector emissive-anim pos-anim color0"
+        animation__color ="property: material.color; from: #ff6eb3; to: #994068; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #994068; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note0; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash color0hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
-      <a-entity id="note1" rotation="0 90 0" mixin="sector emissive-anim pos-anim" material="color:#008"
-        animation__color ="property: material.color; from: #00F; to: #008; dur: 300; startEvents: hit">
-        <a-entity mixin="sectorbase" material="color:#008"
-          animation__color ="property: material.color; from: #00F; to: #008; dur: 300; startEvents: hit"></a-entity>
+      <a-entity id="note1" rotation="0 90 0" mixin="sector emissive-anim pos-anim color1"
+        animation__color ="property: material.color; from: #68a1ff; to: #3d5f99; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #3d5f99; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note1; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash color1hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
-      <a-entity id="note2" rotation="0 180 0" mixin="sector emissive-anim pos-anim" material="color:#880"
-        animation__color ="property: material.color; from: #FF0; to: #880; dur: 300; startEvents: hit">
-        <a-entity mixin="sectorbase" material="color:#880"
-          animation__color ="property: material.color; from: #FF0; to: #880; dur: 300; startEvents: hit"></a-entity>
+      <a-entity id="note2" rotation="0 180 0" mixin="sector emissive-anim pos-anim color2"
+        animation__color ="property: material.color; from: #45ffde; to: #308a79; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #308a79; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note2; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash color2hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
-      <a-entity id="note3" rotation="0 270 0" mixin="sector emissive-anim pos-anim" material="color:#080"
-        animation__color ="property: material.color; from: #0F0; to: #080; dur: 300; startEvents: hit">
-        <a-entity mixin="sectorbase" material="color:#080"
-          animation__color ="property: material.color; from: #0F0; to: #080; dur: 300; startEvents: hit"></a-entity>
+      <a-entity id="note3" rotation="0 270 0" mixin="sector emissive-anim pos-anim color3"
+        animation__color ="property: material.color; from: #fff072; to: #948a41; dur: 300; startEvents: hit"
+        animation__color2 ="property: material.color; from: #994068; to: #948a41; dur: 2000; startEvents: gameover">
         <a-entity sound="src:#sound-note3; on: hit; poolSize: 20"></a-entity>
+        <a-entity mixin="sectorflash color3hit" rotation="-90 -180 0"></a-entity>
       </a-entity>
 
-      <a-entity id="clockbg" position="0 -2 -0.6" rotation="-30 0 0" geometry="primitive:plane;width:0.8;height:0.03" material="shader:flat;color:#ccc;transparent:true;opacity:0.16"
+      <a-entity id="clockbg" position="0 -2 -0.6" rotation="-30 0 0" geometry="primitive:plane;width:0.8;height:0.05" material="shader:flat; color:#424248"
         animation__pos="property: position; from: 0 -2 -0.6; to: 0 0.14 -0.6; dur: 1600; easing: easeOutElastic; delay: 650; startEvents: startgame"
-        animation__pos2="property: position; to: 0 -2 -0.6; from: 0 0.14 -0.6; dur: 1500; easing: easeInOutCubic; delay: 3000; startEvents: gameover"
+        animation__pos2="property: position; to: 0 -2 -0.6; from: 0 0.14 -0.6; dur: 1500; easing: easeInOutCubic; delay: 2000; startEvents: gameover"
         >
-        <a-entity position="0 0 0.01" id="clock" scale="1 1 1" geometry="primitive:plane;width:0.8;height:0.03" material="shader:flat;color:#ccc"></a-entity>
+        <a-entity position="0 0 0.01" id="clock" scale="1 1 1" geometry="primitive:plane;width:0.8;height:0.05" material="shader:flat;color:#3d5f99"></a-entity>
       </a-entity>
     </a-entity>
 
-    <a-entity geometry="height:0.38;width:0.17" position="0 1.614 -0.747" id="starthit" rotation="0 90 0" visible="false"></a-entity>
-    <a-entity id="startbutton" mixin="font" text="value: START; width: 6; color: #52ae2b" position="0 1.65 -0.7" button="hitTarget:#starthit"
-      animation__enabled="property: button.enabled; from: true; to: false; startEvents: focus"
-      animation__visible="property: visible; from: true; to: false; startEvents: focus; delay: 400"
-      animation__color="property: text.color; from: #FFF; to: #6db4e7; startEvents: focus; dur: 400"
-      animation__position="property: position; from: 0 1.65 -0.7; to: 0 1.65 -50; startEvents: focus; dur: 8000; easing: easeOutCubic"
-      animation__opacity="property: text.opacity; from: 1; to: 0; startEvents: focus; dur: 400"
-
-      animation__enabled2="property: button.enabled; from: false; to: true; delay: 4000; startEvents: gameover"
-      animation__visible2="property: visible; from: false; to: true; delay: 4000; startEvents: gameover;"
-      animation__color2="property: text.color; from: #FFF; to: #6db4e7; delay: 4000; startEvents: gameover; dur: 800"
-      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 4000; startEvents: gameover; dur: 800; easing: easeOutElastic"
-      animation__opacity2="property: text.opacity; from: 0; to: 1; delay: 4000; startEvents: gameover; dur: 800;"
-
-      proxy-event="event: focus; to: #super, #board, #loopsound, #clockbg; as: startgame"
-    >
-      <a-entity sound="src:#gong; on: focus"></a-entity>
-    </a-entity>
-  
     <a-entity id="board" position="0 -2 -2.2"
         animation__pos="property: position; from: 0 -2 -2.2; to: 0 1.65 -2.2; dur: 1500; easing: easeOutElastic; delay: 600; startEvents: startgame"
-        animation__pos2="property: position; from: 0 1.65 -2.2; to: 0 2.3 -2.4; dur: 1500; easing: easeInOutCubic; delay: 3000; startEvents: gameover"
+        animation__pos2="property: position; from: 0 1.65 -2.2; to: 0 2.3 -2.4; dur: 1500; easing: easeInOutCubic; delay: 2000; startEvents: gameover"
       >
       <a-entity id="loopsound" sound="src:#loop; on: startgame; loop: true"></a-entity>
-      <a-entity id="level" mixin="font" text="value:Level;width:2.5" position="-0.3 -0.049 0"></a-entity>
-      <a-entity id="levelv" mixin="font" text="value:0;width:4;color:#31c2f2" position="-0.3 -0.19 0.04"></a-entity>
-      <a-entity id="points" mixin="font" text="value:Points;width:2.5" position="0.3 -0.054 0"></a-entity>
-      <a-entity id="pointsv" mixin="font" text="value:0;width:4.07;color:#f1dc49" position="0.3 -0.19 0.04"></a-entity>
-      <a-entity id="messages" mixin="font" text="value:GAMEOVER;width:4.49;opacity:0;color:#E33" position="0 0.254 0.164"
+      <a-entity id="level" mixin="font" text="value:Level;width:2.5;align:left;anchor:left" position="-0.445 -0.049 0"></a-entity>
+      <a-entity id="levelv" mixin="font" text="value:0;width:4;color:#3d5f99;align:left;anchor:left;wrapCount:50" position="-0.441 -0.264 0.04"></a-entity>
+      <a-entity id="points" mixin="font" text="value:Points;width:2.5;align:left;anchor:left" position="0 -0.054 0"></a-entity>
+      <a-entity id="pointsv" mixin="font" text="value:7;width:4.07;color:#948a41;align:left;anchor:left;wrapCount:50" position="0.002 -0.27 0.04"></a-entity>
+      <a-entity id="messages" mixin="font" text="value:GAMEOVER;width:4.49;opacity:0;color:#994068" position="0 0.254 0.164"
         animation__opacity1="property: text.opacity; from: 0; to: 1; dur: 500; startEvents: show;"
         animation__position="property: position; from: 0 0.254 -0.2; to: 0 0.254 0.164; dur: 1000; easing: easeOutElastic; startEvents: show"
         animation__scale="property: scale; from: 1 1 1; to: 1.4 1.4 1.4; dur: 1000; easing: easeOutElastic; startEvents: show"
@@ -127,9 +191,9 @@
       <a-entity id="soundfail" sound="src:#fail; on: gameover"></a-entity>
 
     </a-entity>
-
-    <a-entity id="highscores" position="-3 3 -1.6" rotation="0 66 0" visible="false">
-      <a-entity mixin="font" text="value:High Scores; width:5" position="0 0 0.1"></a-entity>
+    <a-entity id="highscores" position="-3 3 -1.6" rotation="0 66 0">
+      <a-entity geometry="primitive: plane; width: 0.6; height: 0.15" material="shader: flat; src: #logoImg; transparent: true" position="-0.57 0.5 0"></a-entity>
+      <a-entity mixin="font" text="align:left; value:Top Scores; width:5; color: #cdcdcd" position="1.6 0.057 0.1"></a-entity>
       <a-entity highscores="spacing: 0.25" position="0 -0.4 0">
         <a-entity>
           <a-entity class="player" mixin="highscorefont" text="align: left; value: feiss; "></a-entity>
@@ -173,8 +237,32 @@
         </a-entity>
 
       </a-entity>
-
     </a-entity>
+    <a-entity id="highscoresSound" position="-3 3 -1.6" sound="src:#scoring"></a-entity>
+
+    <a-entity geometry="height:0.38;width:0.17" position="0 1.614 -0.747" id="starthit" rotation="0 90 0" visible="false"></a-entity>
+    <!--<a-entity id="startbutton" mixin="font" text="value: START; width: 6; color: #52ae2b" position="0 1.65 -0.7" button="hitTarget:#starthit"-->
+    <a-entity id="startbutton" geometry="primitive:plane; height:0.4; width:0.8" material="shader:flat; depthWrite: false; transparent:true; src:#playImg" position="0 1.65 -0.7" button="hitTarget:#starthit"
+
+      animation__enabled="property: button.enabled; from: true; to: false; startEvents: focus"
+      animation__visible="property: material.opacity; from: 1; to: 0; startEvents: focus; delay: 400"
+      animation__position="property: position; from: 0 1.65 -0.7; to: 0 1.65 -50; startEvents: focus; dur: 8000; easing: easeOutCubic"
+
+      animation__enabled2="property: button.enabled; from: false; to: true; delay: 1700; startEvents: restart, savescore"
+      animation__visible2="property: material.opacity; from: 0; to: 1; delay: 1700; startEvents: restart, savescore"
+      animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 1700; startEvents: restart, savescore; dur: 10"
+      animation__pop1="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutElastic; delay: 1700; dur: 1000; startEvents: restart, savescore"
+
+      proxy-event="event: focus; to: #super, #board, #loopsound, #clockbg, #playExplosion; as: startgame"
+    >
+      <a-entity sound="src:#gong; on: focus"></a-entity>
+    </a-entity>
+
+    <a-entity id="playExplosion" position="0 1.614 -.8" scale="0 0 0" geometry="primitive:ring; segmentsPhi:1; segmentsTheta:30; radiusInner:1.11" material="shader:flat; depthWrite:false; transparent:true; side:double; color:#fff072" 
+      animation__hit1="property:scale; from:0 0 0; to:0.4 0.4 0.4; dur:600; easing:easeOutCubic; startEvents:startgame" 
+      animation__hit2="property:material.opacity; from:0.6; to:0; dur:600; easing:easeOutCubic; startEvents:startgame" 
+      ></a-entity>
+
   </a-scene>
 </body>
 </html>
