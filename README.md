@@ -1,3 +1,3 @@
 # SuperSays
 
-A Simon-alike minigame made in A-Frame
+A Simon-alike WebVR minigame made in A-Frame
