@@ -108,6 +108,7 @@ AFRAME.registerComponent('supersays', {
     this.noteEls[note].emit('hit');
     this.noteEls[note].children[0].emit('hit');
     this.noteEls[note].children[1].emit('hit');
+    this.noteEls[note].children[2].emit('hit');
   },
   say: function(msg){
     this.messages.setAttribute('text', {value: msg});
