@@ -45,6 +45,7 @@ AFRAME.registerComponent('supersays', {
     this.points = 0;
     this.pointsAnim = 0;
     this.nextSong();
+    this.pointsText.setAttribute('text', {value: 0});
   },
   play: function(){
     this.el.addEventListener('startgame', this.newGame.bind(this));

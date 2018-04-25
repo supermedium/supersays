@@ -10,6 +10,7 @@ AFRAME.registerComponent('highscores', {
     this.playerObjs = null;
     this.scoreObjs = null;
     this.pulsing = 0;
+    this.startPulsingTime = null;
   },
   updateScore: function(data){
     var data = data.val()
@@ -23,6 +24,7 @@ AFRAME.registerComponent('highscores', {
     this.scores.sort(function(a,b){ return a['score'] < b['score'] ? 1 : a['score'] > b['score'] ? -1 : 0})
     this.update();
     this.pulsing = 1;
+    this.startPulsingTime = null;
     document.getElementById('highscoresSound').components.sound.playSound();
   }, 
   updateError: function(err){
@@ -60,10 +62,12 @@ AFRAME.registerComponent('highscores', {
   },
   tick: function(time, delta){
     if (this.pulsing <= 0) return;
+    if (this.startPulsingTime === null) {this.startPulsingTime = time;}
+    var t = time - this.startPulsingTime;
     var frec = 200 - 100 * this.pulsing;
     for (var i = 0; i < this.playerObjs.length; i++) {
-      this.playerObjs[i].position.z = this.playerObjs[i].staticPos.z + Math.sin((time - i * 40) / frec ) * 0.3 * this.pulsing;
-      this.scoreObjs[i].position.z = this.scoreObjs[i].staticPos.z + Math.sin((time - (i+2) * 40) / frec ) * 0.3 * this.pulsing;
+      this.playerObjs[i].position.z = this.playerObjs[i].staticPos.z + Math.sin((t - i * 40) / frec ) * 0.3 * this.pulsing;
+      this.scoreObjs[i].position.z = this.scoreObjs[i].staticPos.z + Math.sin((t - (i+2) * 40) / frec ) * 0.3 * this.pulsing;
     }
     this.pulsing -= delta / 6000.0;
   }

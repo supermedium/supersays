@@ -241,15 +241,14 @@ firebase.initializeApp(config);
     <a-entity id="highscoresSound" position="-3 3 -1.6" sound="src:#scoring"></a-entity>
 
     <a-entity geometry="height:0.38;width:0.17" position="0 1.614 -0.747" id="starthit" rotation="0 90 0" visible="false"></a-entity>
-    <!--<a-entity id="startbutton" mixin="font" text="value: START; width: 6; color: #52ae2b" position="0 1.65 -0.7" button="hitTarget:#starthit"-->
     <a-entity id="startbutton" geometry="primitive:plane; height:0.4; width:0.8" material="shader:flat; depthWrite: false; transparent:true; src:#playImg" position="0 1.65 -0.7" button="hitTarget:#starthit"
 
       animation__enabled="property: button.enabled; from: true; to: false; startEvents: focus"
-      animation__visible="property: material.opacity; from: 1; to: 0; startEvents: focus; delay: 400"
+      animation__visible="property: material.opacity; from: 1; to: 0; startEvents: focus; dur: 1000"
       animation__position="property: position; from: 0 1.65 -0.7; to: 0 1.65 -50; startEvents: focus; dur: 8000; easing: easeOutCubic"
 
       animation__enabled2="property: button.enabled; from: false; to: true; delay: 1700; startEvents: restart, savescore"
-      animation__visible2="property: material.opacity; from: 0; to: 1; delay: 1700; startEvents: restart, savescore"
+      animation__visible2="property: material.opacity; from: 0; to: 1; delay: 1700; dur:1000; startEvents: restart, savescore"
       animation__position2="property: position; to: 0.0 1.65 -0.7; delay: 1700; startEvents: restart, savescore; dur: 10"
       animation__pop1="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutElastic; delay: 1700; dur: 1000; startEvents: restart, savescore"
 
