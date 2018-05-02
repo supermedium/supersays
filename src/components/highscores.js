@@ -6,7 +6,7 @@ AFRAME.registerComponent('highscores', {
   init: function(){
     this.scores = null;
     var db = firebase.database().ref('scores');
-    db.orderByValue().limitToFirst(10).on('value', this.updateScore.bind(this), this.updateError.bind(this));
+    db.orderByChild('score').limitToLast(10).on('value', this.updateScore.bind(this), this.updateError.bind(this));
     this.playerObjs = null;
     this.scoreObjs = null;
     this.pulsing = 0;
