@@ -44,7 +44,8 @@ function initSubscribeForm () {
 
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.send(JSON.stringify({
-      email: document.querySelector('[name="email"]').value
+      email: document.querySelector('[name="email"]').value,
+      source: 'supersays'
     }));
 
     return false;
