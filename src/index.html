@@ -26,6 +26,7 @@ firebase.initializeApp(config);
 <script src="components/button.js"></script>
 <script src="components/bgshapes.js"></script>
 <script src="components/proxy-event-detail.js"></script>
+<script src="components/subscribe.js"></script>
 
 </head>
 <body>
@@ -63,10 +64,10 @@ firebase.initializeApp(config);
 
       <a-mixin id="tabletile" position="0 0.02 -0.7" geometry="openEnded: true; height:0.09; radius:0.371; segmentsHeight:8; segmentsRadial:32; primitive:cylinder; thetaLength:90" material="roughness:0.39"></a-mixin>
       <a-mixin id="floortile" position="0 -0.012 -0.7" geometry="radius:1.11; primitive:circle; thetaLength:90; segments:16" material="roughness:0.39;"></a-mixin>
-      <a-mixin id="sectorflash" 
-        position="0 -0.1 0" 
+      <a-mixin id="sectorflash"
+        position="0 -0.1 0"
         geometry="radiusOuter: 0.5; radiusInner: 0.44; primitive: ring; segmentsPhi: 1; segmentsTheta: 11; thetaLength: 90"
-        material="shader:flat; transparent:true; opacity: 0" 
+        material="shader:flat; transparent:true; opacity: 0"
         animation__alpha ="property: material.opacity; from: 1; to: 0; dur: 400; startEvents: hit; easing: easeOutCubic"
         animation__scale ="property: scale; from: 1 1 1; to: 1.02 1.02 1.02; dur: 400; startEvents: hit; easing: easeOutCubic"
       ></a-mixin>
@@ -80,7 +81,7 @@ firebase.initializeApp(config);
     <a-sky color="#29292d"></a-sky>
     <a-entity bgshapes></a-entity>
 
-    <a-entity id="keyboard" 
+    <a-entity id="keyboard"
       simple-keyboard="label:You made it to the TOP 10!!\nEnter your name:; labelColor: #41bca6; labelBgColor: #1b1b1d; filters: alllower; fontColor: #517ecb; width: 1.0; maxlength: 10"
       position="0 -0.63 -1.67" rotation="-14 0 0" visible="false"
       animation__open="property: visible; to: true; startEvents: askname; delay: 3500; dur: 40"
@@ -90,10 +91,10 @@ firebase.initializeApp(config);
       proxy-event__alt="event: keyboard-dismissed; to: #super; as: raise"
       >
     </a-entity>
-        
-    <a-entity id="lefthand" 
-      vive-controls="hand: left; model:false" 
-      oculus-touch-controls="hand: left; model:false" 
+
+    <a-entity id="lefthand"
+      vive-controls="hand: left; model:false"
+      oculus-touch-controls="hand: left; model:false"
       haptics="dur: 40"
       >
       <a-sphere radius="0.04" material="transparent: true; opacity: 0.3; color: #517ecb; emissive: #fff; emissiveIntensity: 0.4"
@@ -101,8 +102,8 @@ firebase.initializeApp(config);
         animation__opacity ="property: material.opacity; from: 1.0; to: 0.3; dur: 800; startEvents: hit"
       ></a-sphere>
     </a-entity>
-    <a-entity id="righthand" 
-      vive-controls="hand: right; model:false" 
+    <a-entity id="righthand"
+      vive-controls="hand: right; model:false"
       oculus-touch-controls="hand: right; model:false"
       haptics="dur: 40"
       raycaster="objects: .keyboard-raycastable; showLine: false; far: 3; interval: 30; enabled: false"
@@ -118,12 +119,12 @@ firebase.initializeApp(config);
     </a-entity>
 
     <a-entity id="floor" geometry="primitive:circle; segments:64" position="0 0 -0.7" rotation="-90.012 0 0" material="color:#434349; roughness:0.39"></a-entity>
-    
+
     <a-entity rotation="0 -90 0" mixin="tabletile color0"></a-entity>
     <a-entity rotation="0 0 0" mixin="tabletile color1"></a-entity>
     <a-entity rotation="0 90 0" mixin="tabletile color2"></a-entity>
     <a-entity rotation="0 180 0" mixin="tabletile color3"></a-entity>
-    
+
     <a-entity mixin="floortile color0" rotation="-90 180 0"></a-entity>
     <a-entity mixin="floortile color1" rotation="-90 -90 0"></a-entity>
     <a-entity mixin="floortile color2" rotation="-90 0 0"></a-entity>
@@ -187,7 +188,7 @@ firebase.initializeApp(config);
         animation__scale="property: scale; from: 1 1 1; to: 1.4 1.4 1.4; dur: 1000; easing: easeOutElastic; startEvents: show"
         animation__opacity2="property: text.opacity; from: 1; to: 0; dur: 1000; startEvents: show; delay: 4000">
       </a-entity>
-      
+
       <a-entity id="soundfail" sound="src:#fail; on: gameover"></a-entity>
 
     </a-entity>
@@ -257,12 +258,73 @@ firebase.initializeApp(config);
       <a-entity sound="src:#gong; on: focus"></a-entity>
     </a-entity>
 
-    <a-entity id="playExplosion" position="0 1.614 -.8" scale="0 0 0" geometry="primitive:ring; segmentsPhi:1; segmentsTheta:30; radiusInner:1.11" material="shader:flat; depthWrite:false; transparent:true; side:double; color:#fff072" 
-      animation__hit1="property:scale; from:0 0 0; to:0.4 0.4 0.4; dur:600; easing:easeOutCubic; startEvents:startgame" 
-      animation__hit2="property:material.opacity; from:0.6; to:0; dur:600; easing:easeOutCubic; startEvents:startgame" 
+    <a-entity id="playExplosion" position="0 1.614 -.8" scale="0 0 0" geometry="primitive:ring; segmentsPhi:1; segmentsTheta:30; radiusInner:1.11" material="shader:flat; depthWrite:false; transparent:true; side:double; color:#fff072"
+      animation__hit1="property:scale; from:0 0 0; to:0.4 0.4 0.4; dur:600; easing:easeOutCubic; startEvents:startgame"
+      animation__hit2="property:material.opacity; from:0.6; to:0; dur:600; easing:easeOutCubic; startEvents:startgame"
       ></a-entity>
-
   </a-scene>
+
+  <div id="subscribeForm">
+    <h2>Get Updates on Our Upcoming VR Projects!</h2>
+    <form>
+      <input name="email" type="email" placeholder="Email address">
+      <button class="submit" type="submit">Subscribe</button>
+    </form>
+  </div>
+
+<style>
+#subscribeForm {
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0 1px #888;
+  bottom: 0;
+  color: #FAFAFA;
+  font-family: monospace;
+  height: 100px;
+  left: 0;
+  margin: 0;
+  min-width: 400px;
+  padding: 5px 10px 0 10px;
+  position: fixed;
+  text-align: center;
+  z-index: 9999999;
+}
+
+#subscribeForm h2 {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+input[type="email"] {
+  background: #FAFAFA;
+  border: 0;
+  border-radius: 5px;
+  color: $gray;
+  height: 40px;
+  padding-left: 20px;
+  margin-right: 10px;
+  max-width: 480px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 50%;
+}
+
+button {
+  border: 0;
+  background: #FF74b8;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #FAFAFA;
+  text-transform: uppercase;
+  transition: .1s all;
+  padding: 11px 20px;
+  vertical-align: middle;
+}
+
+button:hover {
+  background: #FF94C8;
+}
+</style>
 </body>
 </html>
 
